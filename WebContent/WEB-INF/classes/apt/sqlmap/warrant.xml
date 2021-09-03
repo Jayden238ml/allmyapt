@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Warrant">
+	<select id="getAmcWarrant_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			SUM(TOTAL_CNT)AS TOTAL_CNT 
+		FROM(
+			SELECT
+				COUNT(DISTINCT A.APT_CODE) AS TOTAL_CNT
+			FROM APT_INFO_MSTR A  
+			WHERE 1 = 1
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%') 
+			</if>
+			GROUP BY A.APT_CODE
+		)T 
+	</select>
+	
+	
+	<select id="getAmcWarrant_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.APT_NM
+						, A.APT_CODE 
+						, (SELECT COUNT(*) FROM TB_WARRANT_INFO WHERE A.APT_CODE = APT_CODE) AS HOSU_CNT
+					FROM APT_INFO_MSTR A  
+					WHERE 1 = 1	
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%') 
+					</if>
+					ORDER BY A.APT_NM DESC
+					LIMIT 9999999
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+	</select>
+	
+	
+	<select id="getAptCode_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  APT_CODE
+			, APT_NM
+		FROM APT_INFO_MSTR A 
+		WHERE A.APT_CODE NOT IN (
+			SELECT
+				APT_CODE
+			FROM TB_WARRANT_INFO
+		)
+	</select>
+	
+	
+	<insert id="setTbWarrant_info_Insert">
+		INSERT INTO TB_WARRANT_INFO(
+			  APT_CODE
+			, DANZI
+			, DONG
+			, HOSU
+			, WARRANT_YN
+			, JOHAP_YN
+			, REGDATE
+		)VALUES(
+			  #{APT_CODE}
+			, #{DANZI}
+			, #{DONG}
+			, #{HOSU}
+			, 'N'
+			, #{JOHAP_YN}
+			, NOW()
+		)
+	</insert>
+	
+	
+	<select id="getMyWarrant_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*)AS TOTAL_CNT
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		<if test="SCH_DANZI != null and SCH_DANZI != ''">
+			AND DANZI = #{SCH_DANZI}
+		</if>
+		<if test="SCH_DONG != null and SCH_DONG != ''">
+			AND DONG = #{SCH_DONG}
+		</if>
+		<if test="SCH_HOSU != null and SCH_HOSU != ''">
+			AND HOSU = #{SCH_HOSU}
+		</if>
+		<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+			AND WARRANT_YN = #{SCH_WARRANT_YN}
+		</if>
+		<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+			AND AMT_YN = #{SCH_AMT_YN}
+		</if>
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			AND(
+				DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+				OR
+				HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+			)
+		</if>
+	</select>
+	
+	
+	<select id="getMyWarrant_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+						SELECT
+						  WARRANT_SEQ
+						, APT_CODE
+						, DANZI
+						, DONG
+						, HOSU
+						, USER_NM
+						, NICK
+						, HP
+						, HP2
+						, USER_NM2
+						, WARRANT_YN
+						, CASE WHEN WARRANT_YN = 'Y' THEN '제출' ELSE '미제출' END AS WARRANT_YN_NM
+						, AMT_YN
+						, CASE WHEN AMT_YN = 'Y' THEN '납부' ELSE '미납부' END AS AMT_YN_NM
+						, ADDR
+						, JOHAP_YN 
+						, CASE WHEN JOHAP_YN = 'Y' THEN '조합' ELSE '일반분양자' END AS JOHAP_YN_NM
+						, ETC
+						, AMT
+						, AMT_IN_DATE
+						, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+						, DATE_FORMAT(UPDDATE, '%Y-%m-%d') UPDDATE 
+					FROM TB_WARRANT_INFO 	
+					WHERE 1 = 1
+					AND APT_CODE = #{SESSION_APT_CODE}
+					<if test="SCH_DANZI != null and SCH_DANZI != ''">
+						AND DANZI = #{SCH_DANZI}
+					</if>
+					<if test="SCH_DONG != null and SCH_DONG != ''">
+						AND DONG = #{SCH_DONG}
+					</if>
+					<if test="SCH_HOSU != null and SCH_HOSU != ''">
+						AND HOSU = #{SCH_HOSU}
+					</if>
+					<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+						AND WARRANT_YN = #{SCH_WARRANT_YN}
+					</if>
+					<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+						AND AMT_YN = #{SCH_AMT_YN}
+					</if>
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						AND(
+							DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+					</if>
+					ORDER BY CAST(DONG AS UNSIGNED), CAST(HOSU AS UNSIGNED)
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY CAST(DONG AS UNSIGNED), CAST(HOSU AS UNSIGNED)
+	</select>
+	
+	
+	<select id="getMyAptInfo" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			*
+		FROM APT_INFO_MSTR
+		WHERE APT_CODE = #{SESSION_APT_CODE}
+	</select>
+	
+	<select id="getWarrAvg" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+		   TRUNCATE((W_CNT * 100) / T_CNT , 2)AS TOTAL_AVG
+		FROM (
+		    SELECT 
+		  		  COUNT(*) AS W_CNT
+          		, (SELECT COUNT(*) FROM TB_WARRANT_INFO WHERE APT_CODE = #{SESSION_APT_CODE} )AS T_CNT
+			FROM TB_WARRANT_INFO A
+			WHERE 1 = 1
+			AND A.WARRANT_YN = 'Y'
+      		AND A.APT_CODE = #{SESSION_APT_CODE}
+		)T
+	</select>
+	
+	<select id="getMyDanzi_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			DANZI	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		GROUP BY DANZI
+		ORDER BY CONVERT(DANZI ,UNSIGNED) 
+		LIMIT 9999999
+	</select>
+	
+	<select id="getMyDong_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			DONG	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		<if test="SCH_DANZI != null and SCH_DANZI != ''">
+			AND DANZI = #{SCH_DANZI}
+		</if>
+		<if test="DANZI != null and DANZI != ''">
+			AND DANZI = #{DANZI}
+		</if>
+		GROUP BY DONG
+		ORDER BY CONVERT(DONG ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getMyHosu_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			HOSU	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		<if test="SCH_DONG != null and SCH_DONG != ''">
+			AND DONG = #{SCH_DONG}
+		</if>
+		<if test="DONG != null and DONG != ''">
+			AND DONG = #{DONG}
+		</if>
+		ORDER BY CONVERT(HOSU ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	<select id="getMyDongNoSch_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			DONG	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		<if test="DANZI != null and DANZI != ''">
+			AND DANZI = #{DANZI}
+		</if>
+		GROUP BY DONG
+		ORDER BY CONVERT(DONG ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getMyHosuNoSch_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			HOSU	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		<if test="DONG != null and DONG != ''">
+			AND DONG = #{DONG}
+		</if>
+		ORDER BY CONVERT(HOSU ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="LmsExcelDown" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			HP
+	      , USER_NM
+		FROM(
+			SELECT 
+				REPLACE(HP, '-', '')AS HP
+				, USER_NM
+				, '' AS MAIL
+			FROM TB_WARRANT_INFO
+			WHERE WARRANT_YN = 'Y'
+			AND HP != ''
+			AND APT_CODE = #{SESSION_APT_CODE}
+			UNION ALL
+			SELECT 
+				REPLACE(HP2, '-', '')AS HP
+				, USER_NM2
+				, '' AS MAIL
+			FROM TB_WARRANT_INFO
+			WHERE WARRANT_YN = 'Y'
+			AND HP2 != ''
+			AND APT_CODE = #{SESSION_APT_CODE}
+		)T
+		WHERE LENGTH(HP) = 11 
+		GROUP BY HP, USER_NM, MAIL
+		ORDER BY  USER_NM IS NULL ASC, USER_NM
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getMyAptDetailInfo" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  WARRANT_SEQ
+			, APT_CODE
+			, DANZI
+			, DONG
+			, HOSU
+			, USER_NM
+			, NICK
+			, HP
+			, HP2
+			, USER_NM2
+			, WARRANT_YN
+			, CASE WHEN WARRANT_YN = 'Y' THEN '제출' ELSE '미제출' END AS WARRANT_YN_NM
+			, AMT_YN
+			, CASE WHEN AMT_YN = 'Y' THEN '납부' ELSE '미납부' END AS AMT_YN_NM
+			, ADDR
+			, JOHAP_YN 
+			, CASE WHEN JOHAP_YN = 'Y' THEN '조합' ELSE '일반분양자' END AS JOHAP_YN_NM
+			, ETC
+			, AMT
+			, AMT_IN_DATE
+			, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+			, DATE_FORMAT(UPDDATE, '%Y-%m-%d') UPDDATE
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND WARRANT_SEQ = #{WARRANT_SEQ}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</select>
+	
+	<insert id="aptWarrantHisory_Insert">
+		INSERT INTO TB_WARRANT_HIST
+		SELECT * FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND WARRANT_SEQ = #{WARRANT_SEQ}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</insert>
+	
+	<insert id="aptWarrantHisoryExcel_Insert">
+		INSERT INTO TB_WARRANT_HIST
+		SELECT * FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{APT_CODE}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</insert>
+	
+	<update id="aptWarrantInfo_Update">
+		UPDATE TB_WARRANT_INFO SET
+			  USER_NM = #{USER_NM}
+			, USER_NM2 = #{USER_NM2}
+			, HP = #{HP}
+			, HP2 = #{HP2}
+			, ADDR = #{ADDR}
+			, JOHAP_YN = #{JOHAP_YN}
+			, AMT_YN = #{AMT_YN}
+			, WARRANT_YN = #{WARRANT_YN}
+			, ETC = #{ETC}
+			, UPDDATE = NOW()
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND WARRANT_SEQ = #{WARRANT_SEQ}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</update>
+	
+	
+	
+	<update id="setTbWarrant_info_Update">
+		UPDATE TB_WARRANT_INFO SET
+			  USER_NM = #{USER_NM}
+			, HP = #{HP}
+			, ADDR = #{ADDR}
+			, WARRANT_YN = 'Y'
+			, UPDDATE = NOW()
+		WHERE 1 = 1
+		AND APT_CODE = #{APT_CODE}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</update>
+	
+	
+	<select id="getMyWarrantHist_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM(
+			SELECT
+				(SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND USER_NM != A.USER_NM) AS USER_NM_CNT
+			  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND HP != A.HP) AS HP_CNT
+			  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND WARRANT_YN != A.WARRANT_YN) AS WARRANT_YN_CNT
+			  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND AMT_YN != A.AMT_YN) AS AMT_YN_CNT
+			  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND ADDR != A.ADDR) AS ADDR_CNT
+			FROM TB_WARRANT_INFO A INNER JOIN TB_WARRANT_HIST B ON A.WARRANT_SEQ = B.WARRANT_SEQ
+	                                AND A.APT_CODE = B.APT_CODE AND A.DANZI = B.DANZI AND A.DONG = B.DONG AND A.HOSU = B.HOSU
+			WHERE 1 = 1
+			AND A.APT_CODE = #{SESSION_APT_CODE}
+			<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND A.DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND A.DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND A.HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND A.WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					A.DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					A.HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+			GROUP BY A.WARRANT_SEQ, A.APT_CODE, A.DANZI, A.DONG, A.HOSU, A.UPDDATE 
+		)T
+		WHERE (USER_NM_CNT + HP_CNT + WARRANT_YN_CNT + AMT_YN_CNT + ADDR_CNT) > 0
+	</select>
+	
+	
+	<select id="getMyWarrantHist_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+						SELECT
+						  A.WARRANT_SEQ
+						  , A.APT_CODE
+						  , A.DANZI
+						  , A.DONG
+						  , A.HOSU
+						  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND USER_NM != A.USER_NM) AS USER_NM_CNT
+						  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND HP != A.HP) AS HP_CNT
+						  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND WARRANT_YN != A.WARRANT_YN) AS WARRANT_YN_CNT
+						  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND AMT_YN != A.AMT_YN) AS AMT_YN_CNT
+						  , (SELECT COUNT(*) FROM TB_WARRANT_HIST WHERE WARRANT_SEQ = A.WARRANT_SEQ AND APT_CODE = A.APT_CODE AND DANZI = A.DANZI AND DONG = A.DONG AND HOSU= A.HOSU AND ADDR != A.ADDR) AS ADDR_CNT
+						  , DATE_FORMAT(A.UPDDATE, '%Y-%m-%d') UPDDATE 
+					FROM TB_WARRANT_INFO A INNER JOIN TB_WARRANT_HIST B ON A.WARRANT_SEQ = B.WARRANT_SEQ
+                                           AND A.APT_CODE = B.APT_CODE AND A.DANZI = B.DANZI AND A.DONG = B.DONG AND A.HOSU = B.HOSU
+					WHERE 1 = 1
+					AND A.APT_CODE = #{SESSION_APT_CODE}
+					<if test="SCH_DANZI != null and SCH_DANZI != ''">
+						AND A.DANZI = #{SCH_DANZI}
+					</if>
+					<if test="SCH_DONG != null and SCH_DONG != ''">
+						AND A.DONG = #{SCH_DONG}
+					</if>
+					<if test="SCH_HOSU != null and SCH_HOSU != ''">
+						AND A.HOSU = #{SCH_HOSU}
+					</if>
+					<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+						AND A.WARRANT_YN = #{SCH_WARRANT_YN}
+					</if>
+					<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+						AND AMT_YN = #{SCH_AMT_YN}
+					</if>
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						AND(
+							A.DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							A.HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+					</if>
+					GROUP BY A.WARRANT_SEQ, A.APT_CODE, A.DANZI, A.DONG, A.HOSU, A.UPDDATE
+					ORDER BY CAST(A.DONG AS UNSIGNED), CAST(A.HOSU AS UNSIGNED) 
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR	
+				WHERE (USER_NM_CNT + HP_CNT + WARRANT_YN_CNT + AMT_YN_CNT + ADDR_CNT) > 0
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY CAST(DONG AS UNSIGNED), CAST(HOSU AS UNSIGNED) 
+	</select>
+	
+	
+	<select id="getMyWarrantHist_Detail_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  WARRANT_SEQ
+			, APT_CODE
+			, DANZI
+			, DONG
+			, HOSU
+			, USER_NM
+			, NICK
+			, HP
+			, HP2
+			, USER_NM2
+			, WARRANT_YN
+			, CASE WHEN WARRANT_YN = 'Y' THEN '제출' ELSE '미제출' END AS WARRANT_YN_NM
+			, AMT_YN
+			, CASE WHEN AMT_YN = 'Y' THEN '납부' ELSE '미납부' END AS AMT_YN_NM
+			, ADDR
+			, JOHAP_YN 
+			, CASE WHEN JOHAP_YN = 'Y' THEN '조합' ELSE '일반분양자' END AS JOHAP_YN_NM
+			, ETC
+			, AMT
+			, AMT_IN_DATE
+			, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+			, DATE_FORMAT(UPDDATE, '%Y-%m-%d') UPDDATE
+		FROM TB_WARRANT_HIST
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND WARRANT_SEQ = #{WARRANT_SEQ}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+		ORDER BY UPDDATE
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getMyamt_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  COUNT(*)AS TOTAL_CNT
+		FROM TB_AMT_INFO A LEFT OUTER JOIN TB_WARRANT_INFO B ON A.APT_CODE = B.APT_CODE AND A.DONG = B.DONG AND A.HOSU = B.HOSU
+		WHERE 1 = 1
+		AND A.APT_CODE = #{SESSION_APT_CODE}
+		<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND B.DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND B.DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND B.HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND B.WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND B.AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					A.USER_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					A.USER_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+	</select>
+	
+	
+	<select id="getMyamt_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.AMT_SEQ
+						, B.DONG
+						, B.HOSU
+						, A.USER_NM
+						, A.AMT_IN_DATE
+						, A.AMT
+						, A.REGDATE
+					FROM TB_AMT_INFO A LEFT OUTER JOIN TB_WARRANT_INFO B ON A.APT_CODE = B.APT_CODE AND A.DONG = B.DONG AND A.HOSU = B.HOSU
+					WHERE 1 = 1
+					AND A.APT_CODE = #{SESSION_APT_CODE}
+					<if test="SCH_DANZI != null and SCH_DANZI != ''">
+							AND B.DANZI = #{SCH_DANZI}
+						</if>
+						<if test="SCH_DONG != null and SCH_DONG != ''">
+							AND B.DONG = #{SCH_DONG}
+						</if>
+						<if test="SCH_HOSU != null and SCH_HOSU != ''">
+							AND B.HOSU = #{SCH_HOSU}
+						</if>
+						<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+							AND B.WARRANT_YN = #{SCH_WARRANT_YN}
+						</if>
+						<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+							AND B.AMT_YN = #{SCH_AMT_YN}
+						</if>
+						<if test="SCH_WORD != null and SCH_WORD != ''">
+							AND(
+								A.USER_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+								OR
+								A.USER_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+							)
+						</if>
+						ORDER BY A.REGDATE DESC
+<!-- 						LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY REGDATE DESC
+	</select>
+	
+	
+	<select id="getAptAmtTotal" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			SUM(IFNULL(CAST(AMT AS UNSIGNED), 0)) AS TOTAL_AMT
+		FROM TB_AMT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+	</select>
+	
+	
+	<update id="setTbWarrant_info_AmtUpdate">
+		UPDATE TB_WARRANT_INFO SET
+			  AMT_YN = 'Y'
+			, AMT = REPLACE(#{AMT}, ',', '')
+			, AMT_IN_DATE = SUBSTR(#{AMT_IN_DATE}, 1, 10)
+			, UPDDATE = NOW()
+		WHERE 1 = 1
+		AND APT_CODE = #{APT_CODE}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</update>
+	
+	<insert id="setTbAmt_Insert">
+		INSERT INTO TB_AMT_INFO(
+			  APT_CODE
+			, DONG
+			, HOSU
+			, USER_NM
+			, AMT
+			, AMT_IN_DATE
+			, REGDATE
+			, UPDDATE
+		)VALUES(
+			  #{APT_CODE}
+			, #{DONG}
+			, #{HOSU}
+			, #{USER_NM}
+			, REPLACE(#{AMT}, ',', '')
+			, SUBSTR(#{AMT_IN_DATE}, 1, 10)
+			, NOW()
+			, NOW()	
+		)
+	</insert>
+	
+	
+	<delete id="setTbAmt_Delete">
+		DELETE FROM TB_AMT_INFO WHERE AMT_SEQ = #{AMT_SEQ}
+	</delete>
+	
+	
+	<select id="getMyAptAmtDetailInfo" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  APT_CODE
+			, DONG
+			, HOSU
+			, USER_NM
+			, AMT
+			, AMT_IN_DATE
+			, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+			, DATE_FORMAT(UPDDATE, '%Y-%m-%d') UPDDATE
+		FROM TB_AMT_INFO
+		WHERE AMT_SEQ = #{AMT_SEQ}
+	</select>
+	
+	
+	<update id="aptWarrantAmt_Update">
+		UPDATE TB_WARRANT_INFO SET
+			  AMT_YN = 'Y'
+			, AMT = REPLACE(#{AMT}, ',', '')
+			, AMT_IN_DATE = SUBSTR(#{AMT_IN_DATE}, 1, 10)
+			, UPDDATE = NOW()
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND DONG = #{DONG}
+		AND HOSU = #{HOSU}
+	</update>
+	
+	
+	<update id="aptAmtInfo_Update">
+		UPDATE TB_AMT_INFO SET
+			  DANZI = #{DANZI}
+			, DONG = #{DONG}
+			, HOSU = #{HOSU}
+			, UPDDATE = NOW()
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND AMT_SEQ = #{AMT_SEQ}
+	</update>
+	
+	
+	
+	<select id="getMyWarrantSms_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*)AS TOTAL_CNT
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SESSION_APT_CODE}
+		AND HP != ''
+		<if test="SCH_DANZI != null and SCH_DANZI != ''">
+			AND DANZI = #{SCH_DANZI}
+		</if>
+		<if test="SCH_DONG != null and SCH_DONG != ''">
+			AND DONG = #{SCH_DONG}
+		</if>
+		<if test="SCH_HOSU != null and SCH_HOSU != ''">
+			AND HOSU = #{SCH_HOSU}
+		</if>
+		<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+			AND WARRANT_YN = #{SCH_WARRANT_YN}
+		</if>
+		<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+			AND AMT_YN = #{SCH_AMT_YN}
+		</if>
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			AND(
+				DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+				OR
+				HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+			)
+		</if>
+	</select>
+	
+	
+	<select id="getMyWarrantSms_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+						SELECT
+						  WARRANT_SEQ
+						, APT_CODE
+						, DANZI
+						, DONG
+						, HOSU
+						, USER_NM
+						, NICK
+						, HP
+						, HP2
+						, USER_NM2
+						, WARRANT_YN
+						, CASE WHEN WARRANT_YN = 'Y' THEN '제출' ELSE '미제출' END AS WARRANT_YN_NM
+						, AMT_YN
+						, CASE WHEN AMT_YN = 'Y' THEN '납부' ELSE '미납부' END AS AMT_YN_NM
+						, ADDR
+						, JOHAP_YN 
+						, CASE WHEN JOHAP_YN = 'Y' THEN '조합' ELSE '일반분양자' END AS JOHAP_YN_NM
+						, ETC
+						, AMT
+						, AMT_IN_DATE
+						, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+						, DATE_FORMAT(UPDDATE, '%Y-%m-%d') UPDDATE 
+					FROM TB_WARRANT_INFO 	
+					WHERE 1 = 1
+					AND APT_CODE = #{SESSION_APT_CODE}
+					AND HP != ''
+					<if test="SCH_DANZI != null and SCH_DANZI != ''">
+						AND DANZI = #{SCH_DANZI}
+					</if>
+					<if test="SCH_DONG != null and SCH_DONG != ''">
+						AND DONG = #{SCH_DONG}
+					</if>
+					<if test="SCH_HOSU != null and SCH_HOSU != ''">
+						AND HOSU = #{SCH_HOSU}
+					</if>
+					<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+						AND WARRANT_YN = #{SCH_WARRANT_YN}
+					</if>
+					<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+						AND AMT_YN = #{SCH_AMT_YN}
+					</if>
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						AND(
+							DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+					</if>
+					ORDER BY CAST(DONG AS UNSIGNED), CAST(HOSU AS UNSIGNED)
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY CAST(DONG AS UNSIGNED), CAST(HOSU AS UNSIGNED)
+	</select>
+	
+	
+	<select id="getMySmsAmtTot" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			IFNULL(MAX(NOW_AMT), 0)AS NOW_AMT
+		FROM SMS_SEND_INFO
+		WHERE APT_CODE = #{SESSION_APT_CODE}
+	</select>
+	
+	
+	<select id="getMyWarrantSmsPop_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			SUM(TOTAL_CNT) AS TOTAL_CNT
+		FROM (
+			SELECT
+				COUNT(*)AS TOTAL_CNT
+			FROM TB_WARRANT_INFO
+			WHERE 1 = 1
+			AND APT_CODE = #{SESSION_APT_CODE}
+			AND HP != ''
+			<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+			UNION ALL
+			SELECT
+				COUNT(*)AS TOTAL_CNT
+			FROM TB_WARRANT_INFO
+			WHERE 1 = 1
+			AND APT_CODE = #{SESSION_APT_CODE}
+			AND HP2 != ''
+			<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+		)T	
+	</select>
+	
+	
+	<select id="getNowSendTelInfo" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  GROUP_CONCAT(HP) AS HP
+			, GROUP_CONCAT(CONCAT(HP, '|', USER_NM)) AS P_NM
+		FROM(
+			SELECT
+				T.*
+			FROM(
+				SELECT
+				  HP
+	  			, USER_NM
+			FROM TB_WARRANT_INFO
+			WHERE 1 = 1
+			AND APT_CODE = #{SESSION_APT_CODE}
+			AND HP != ''
+			<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+			UNION ALL
+			SELECT
+				  HP2 AS HP
+	  			, USER_NM2 AS USER_NM
+			FROM TB_WARRANT_INFO
+			WHERE 1 = 1
+			AND APT_CODE = #{SESSION_APT_CODE}
+			AND HP2 != ''
+			<if test="SCH_DANZI != null and SCH_DANZI != ''">
+				AND DANZI = #{SCH_DANZI}
+			</if>
+			<if test="SCH_DONG != null and SCH_DONG != ''">
+				AND DONG = #{SCH_DONG}
+			</if>
+			<if test="SCH_HOSU != null and SCH_HOSU != ''">
+				AND HOSU = #{SCH_HOSU}
+			</if>
+			<if test="SCH_WARRANT_YN != null and SCH_WARRANT_YN != ''">
+				AND WARRANT_YN = #{SCH_WARRANT_YN}
+			</if>
+			<if test="SCH_AMT_YN != null and SCH_AMT_YN != ''">
+				AND AMT_YN = #{SCH_AMT_YN}
+			</if>
+			<if test="SCH_WORD != null and SCH_WORD != ''">
+				AND(
+					DONG LIKE CONCAT('%', #{SCH_WORD},'%')
+					OR
+					HOSU LIKE CONCAT('%', #{SCH_WORD},'%')
+				)
+			</if>
+			<if test="MANY_CNT == 'Y'.toString()">
+				LIMIT ${LIMIT_S_CNT}, ${LIMIT_E_CNT}
+			</if>
+			)T
+		)TB
+	</select>
+	
+	
+	<select id="getTmp" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+		CEIL(#{TOTAL_CNT} / 1000) AS TC
+	</select>
+	
+	<update id="aptSendSms_Update">
+		UPDATE SMS_SEND_INFO SET
+			  NOW_AMT = NOW_AMT - ${NOW_AMT}
+			, SEND_CNT = SEND_CNT + #{SUCCESS_CNT}
+			, UPDDATE = NOW()
+		WHERE APT_CODE = #{APT_CODE} 
+	</update>
+	
+	<select id="getAptMstr_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  APT_CODE
+			, APT_NM
+		FROM APT_INFO_MSTR
+		ORDER BY APT_NM
+	</select>
+	
+	<select id="getSearchDong_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			DONG	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SCH_APT_CODE}
+		GROUP BY DONG
+		ORDER BY CONVERT(DONG ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	<select id="getSearchHosu_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			HOSU	
+		FROM TB_WARRANT_INFO
+		WHERE 1 = 1
+		AND APT_CODE = #{SCH_APT_CODE}
+		AND DONG = #{SCH_DONG}
+		ORDER BY CONVERT(HOSU ,UNSIGNED)
+		LIMIT 9999999
+	</select>
+	
+	<select id="getAptWarrant_Info" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			*
+		FROM TB_WARRANT_INFO
+		WHERE APT_CODE = #{SCH_APT_CODE}
+		AND DONG = #{SCH_DONG}
+		AND HOSU = #{SCH_HOSU}
+		AND USER_NM = #{USER_NM}
+		AND REPLACE(HP, '-','') = CONCAT(#{HP1}, #{HP2}, #{HP3})
+	</select>
+	
+</mapper>

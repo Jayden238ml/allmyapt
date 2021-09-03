@@ -1,0 +1,765 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+	
+	<insert id="setComBoardInfo_Insert">
+		INSERT INTO COM_BOARD_INFO(
+			  TITLE
+			, BOARD_TYPE
+			, CONTENTS
+			, VIEW_CNT    
+			, IP       
+			, REG_NICK 
+			, SECRET_YN
+			, REP_SEQ
+			, SORT_NUM
+			, REG_ID    
+			, REGDATE     
+			, UPD_ID
+			, UPDDATE
+		)VALUES(
+			  #{TITLE}
+			, #{BOARD_TYPE}
+			, #{CONTENTS}
+			, 0    
+			, #{IP}       
+			, #{SESSION_USER_NICK} 
+			, #{SECRET_YN}
+			, 0
+			, 0
+			, #{SESSION_USER_ID}    
+			, NOW()     
+			, #{SESSION_USER_ID}    
+			, NOW()
+		)
+		<selectKey resultType="int" keyProperty="ANSWER_BOARD_SEQ" order="AFTER">
+		   SELECT LAST_INSERT_ID() ANSWER_BOARD_SEQ
+		</selectKey>
+	</insert> 
+	
+	
+	<update id="setComBoardInfo_Update">
+		UPDATE COM_BOARD_INFO SET
+			  TITLE = #{TITLE}
+			, CONTENTS = #{CONTENTS}
+			, UPD_ID = #{SESSION_USER_ID}
+			, SECRET_YN = #{SECRET_YN}
+			, UPDDATE = NOW()
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</update>
+	
+	<update id="setComBoardInfo_AanswerUpdate">
+		UPDATE COM_BOARD_INFO SET
+			  CONTENTS = #{CONTENTS}
+			, UPD_ID = #{SESSION_USER_ID}
+			, UPDDATE = NOW() 
+		WHERE BOARD_SEQ = #{ANSWER_BOARD_SEQ}
+	</update>
+	
+	
+	<select id="getQnaBoard_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM COM_BOARD_INFO ,(SELECT @RNUM := 0)  STR	
+		WHERE BOARD_TYPE = 'Q'
+		AND DEL_YN = 'N'
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			<choose>
+				<when test="SCH_WORD == 'T'.toString()">
+					AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<when test="SCH_WORD == 'C'.toString()">
+					AND CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<when test="SCH_WORD == 'N'.toString()">
+					AND REG_NICK LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<otherwise>
+					AND (
+							TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							REG_NICK LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="getQnaBoard_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CEILING((RNUM)/#{PAGE_SIZE})  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+				  T.*
+				, @RNUM := @RNUM + 1  AS RNUM
+			FROM(
+					SELECT
+						  BOARD_SEQ
+						, NOTI_YN
+						, BOARD_TYPE
+						, TITLE
+						, DEL_YN
+						, SECRET_YN
+						, REP_YN
+						, VIEW_CNT
+						, IP
+						, CASE WHEN SECRET_YN = 'Y' THEN CONCAT(SUBSTR(REG_NICK, 1,1), '**')  ELSE REG_NICK END AS REG_NICK 
+						, REP_SEQ
+						, SORT_NUM
+						, REG_ID
+						, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE
+					FROM COM_BOARD_INFO ,(SELECT @RNUM := 0)  STR	
+					WHERE BOARD_TYPE = 'Q'
+					AND DEL_YN = 'N' 
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						<choose>
+							<when test="SCH_WORD == 'T'.toString()">
+								AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<when test="SCH_WORD == 'C'.toString()">
+								AND CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<when test="SCH_WORD == 'N'.toString()">
+								AND REG_NICK LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<otherwise>
+								AND (
+										TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+										OR
+										CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+										OR
+										REG_NICK LIKE CONCAT('%', #{SCH_WORD},'%')
+									)
+							</otherwise>
+						</choose>
+					</if> 
+					ORDER BY BOARD_SEQ DESC
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY BOARD_SEQ DESC
+	</select>
+	
+	
+	<select id="getQnaBoard_Detail" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  A.BOARD_SEQ
+			, A.NOTI_YN
+			, A.BOARD_TYPE
+			, A.CONTENTS
+			, A.TITLE
+			, A.DEL_YN
+			, A.VIEW_CNT
+			, A.IP 
+			, A.REG_NICK
+			, A.SECRET_YN
+			, A.REP_YN
+			, A.REP_SEQ
+			, A.SORT_NUM 
+			, A.REG_ID
+			, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE 
+			, B.BOARD_SEQ AS ANSWER_BOARD_SEQ
+			, B.CONTENTS AS ANSWER_CONTENTS
+		FROM COM_BOARD_INFO A LEFT OUTER JOIN COM_BOARD_INFO B ON A.REP_SEQ = B.BOARD_SEQ
+		WHERE A.BOARD_SEQ = #{BOARD_SEQ}
+	</select>
+	
+	
+	<select id="getQnaBoard_AnswerDetail" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  A.BOARD_SEQ
+			, A.NOTI_YN
+			, A.BOARD_TYPE
+			, A.CONTENTS
+			, A.TITLE
+			, A.DEL_YN
+			, A.VIEW_CNT
+			, A.IP 
+			, A.REG_NICK
+			, A.SECRET_YN
+			, A.REP_YN
+			, A.REP_SEQ
+			, A.SORT_NUM 
+			, A.REG_ID
+			, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE 
+			, B.BOARD_SEQ AS ANSWER_BOARD_SEQ
+			, B.CONTENTS AS ANSWER_CONTENTS
+		FROM COM_BOARD_INFO A LEFT OUTER JOIN COM_BOARD_INFO B ON A.REP_SEQ = B.BOARD_SEQ
+		WHERE A.BOARD_SEQ = #{ANSWER_BOARD_SEQ}
+	</select>
+	
+	<update id="setComBoardInfoViewCnt_Update">
+		UPDATE COM_BOARD_INFO SET
+			VIEW_CNT = VIEW_CNT + 1
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</update>
+	
+	
+	<delete id="setComBoardInfo_Delete">
+		UPDATE COM_BOARD_INFO SET
+			DEL_YN = 'Y'
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</delete>
+	
+	
+	<update id="setComBoardInfoAnswer_Update">
+		UPDATE COM_BOARD_INFO SET
+			  REP_YN = 'Y'
+			, REP_SEQ = #{ANSWER_BOARD_SEQ}
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</update>
+	
+	
+	<select id="getAmcNotice_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM COM_BOARD_INFO A
+		WHERE 1 = 1
+		AND A.NOTI_YN = 'Y'
+		AND BOARD_TYPE = 'N'
+		AND A.DEL_YN = 'N'
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			<choose>
+				<when test="SCH_WORD == 'A'.toString()">
+					AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%') 
+				</when>
+				<when test="SCH_WORD == 'B'.toString()">
+					AND CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<otherwise>
+					AND (
+							TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	<select id="getAmcNotice_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.BOARD_SEQ
+						, A.NOTI_YN
+						, A.BOARD_TYPE
+						, A.CONTENTS
+						, A.TITLE
+						, A.DEL_YN
+						, A.VIEW_CNT
+						, A.IP 
+						, A.REG_NICK
+						, A.SECRET_YN
+						, A.REP_YN
+						, A.REP_SEQ
+						, A.SORT_NUM 
+						, A.REG_ID
+						, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE 
+					FROM COM_BOARD_INFO A
+					WHERE 1 = 1
+					AND A.NOTI_YN = 'Y'
+					AND BOARD_TYPE = 'N'
+					AND A.DEL_YN = 'N'
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						<choose>
+							<when test="SCH_WORD == 'A'.toString()">
+								AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<when test="SCH_WORD == 'B'.toString()">
+								AND CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<otherwise>
+								AND (
+										TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+										OR
+										CONTENTS LIKE CONCAT('%', #{SCH_WORD},'%')
+									)
+							</otherwise>
+						</choose>
+					</if>
+					ORDER BY A.BOARD_SEQ DESC
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY BOARD_SEQ DESC
+	</select>
+	
+	
+	<insert id="setComBoardInfoAmc_Insert">
+		INSERT INTO COM_BOARD_INFO(
+			  TITLE
+			, NOTI_YN
+			, BOARD_TYPE
+			, CONTENTS
+			, VIEW_CNT    
+			, IP       
+			, REG_NICK 
+			, SECRET_YN
+			, REP_SEQ
+			, SORT_NUM
+			, REG_ID    
+			, REGDATE     
+			, UPD_ID
+			, UPDDATE
+		)VALUES(
+			  #{TITLE}
+			, #{NOTI_YN}
+			, #{BOARD_TYPE}
+			, #{CONTENTS}
+			, 0    
+			, #{IP}       
+			, #{SESSION_USER_NICK} 
+			, #{SECRET_YN}
+			, 0
+			, 0
+			, #{SESSION_USER_ID}    
+			, NOW()     
+			, #{SESSION_USER_ID}    
+			, NOW()
+		)
+	</insert> 
+	
+	
+	<update id="setComBoardInfoAmc_Update">
+		UPDATE COM_BOARD_INFO SET
+			  TITLE = #{TITLE}
+			, CONTENTS = #{CONTENTS}
+			, UPD_ID = #{SESSION_USER_ID}
+			, UPDDATE = NOW()
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</update>
+	
+	
+	<select id="getMain_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  BOARD_SEQ
+			, TITLE
+			, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+			, REG_NICK
+		FROM COM_BOARD_INFO
+		WHERE 1 = 1
+		AND NOTI_YN = 'Y'
+		AND DEL_YN = 'N'
+		LIMIT 5
+	</select>
+	
+	
+	<insert id="setAptBoardInfoAmc_Insert">
+		INSERT INTO APT_BOARD_INFO(
+			  MST_BOARD_SEQ
+			, APT_BOARD_TYPE
+			, APT_NM
+			, AREA_SIDO
+			, AREA_SIGUNGU
+			, ZIP_NO
+			, ADDR1
+			, ADDR2
+			, CONTENTS
+			, X_LOCATION
+			, Y_LOCATION
+			, DEL_YN
+			, VIEW_CNT
+			, REG_NICK
+			, REG_ID
+			, REGDATE
+			, UPD_ID
+			, UPDDATE
+			, APT_ERECT_CODE
+		)VALUES(
+			  #{MST_BOARD_SEQ}
+			, #{APT_BOARD_TYPE}
+			, #{APT_NM}
+			, #{AREA_SIDO}
+			, #{AREA_SIGUNGU}
+			, #{ZIP_NO}
+			, #{ADDR1}
+			, #{ADDR2}
+			, #{CONTENTS}
+			, #{X_LOCATION}
+			, #{Y_LOCATION}
+			, 'N'
+			, 0
+			, #{SESSION_USER_NICK}
+			, #{SESSION_USER_ID}
+			, NOW()
+			, #{SESSION_USER_ID}
+			, NOW()
+			, #{APT_ERECT_CODE}
+		)
+	</insert>
+	
+	
+	<update id="setAptBoardInfoAmc_Update">
+		UPDATE APT_BOARD_INFO SET
+			APT_BOARD_TYPE = #{APT_BOARD_TYPE}
+			, APT_NM = #{APT_NM}
+			, AREA_SIDO = #{AREA_SIDO}
+			, AREA_SIGUNGU = #{AREA_SIGUNGU}
+			, ZIP_NO = #{ZIP_NO}
+			, ADDR1 = #{ADDR1}
+			, CONTENTS = #{CONTENTS}
+			, X_LOCATION = #{X_LOCATION}
+			, Y_LOCATION = #{Y_LOCATION}
+			, APT_ERECT_CODE = #{APT_ERECT_CODE}
+		WHERE BOARD_SEQ = #{BOARD_SEQ}
+	</update>
+	
+	
+	<insert id="setAptBoardInfoAmc_MstrInsert">
+		INSERT INTO APT_BOARD_MSTR(
+			  APT_NM
+			, AREA_SIDO
+			, AREA_SIGUNGU
+			, ZIP_NO
+			, ADDR1
+			, ADDR2
+			, X_LOCATION
+			, Y_LOCATION
+			, DEL_YN
+			, VIEW_CNT
+			, REG_NICK
+			, REG_ID
+			, REGDATE
+			, UPD_ID
+			, UPDDATE
+			, APT_ERECT_CODE
+		)VALUES(
+			  #{APT_NM}
+			, #{AREA_SIDO}
+			, #{AREA_SIGUNGU}
+			, #{ZIP_NO}
+			, #{ADDR1}
+			, #{ADDR2}
+			, #{X_LOCATION}
+			, #{Y_LOCATION}
+			, 'N'
+			, 0
+			, #{SESSION_USER_NICK}
+			, #{SESSION_USER_ID}
+			, NOW()
+			, #{SESSION_USER_ID}
+			, NOW()
+			, #{APT_ERECT_CODE}
+		)
+	</insert>
+	
+	
+	<update id="setAptBoardInfoAmc_MstrUpdate">
+		UPDATE APT_BOARD_MSTR SET
+			  APT_NM = #{APT_NM}
+			, AREA_SIDO = #{AREA_SIDO}
+			, AREA_SIGUNGU = #{AREA_SIGUNGU}
+			, ZIP_NO = #{ZIP_NO}
+			, ADDR1 = #{ADDR1}
+			, X_LOCATION = #{X_LOCATION}
+			, Y_LOCATION = #{Y_LOCATION}
+			, APT_ERECT_CODE = #{APT_ERECT_CODE}
+		WHERE MST_BOARD_SEQ = #{MST_BOARD_SEQ}
+	</update>
+	
+	
+	<select id="getAmcApt_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM APT_BOARD_MSTR A LEFT OUTER JOIN COM_CODE B ON A.AREA_SIDO = B.CODE AND B.GRP_CODE = '0001' AND B.USE_YN = 'Y'
+		                      LEFT OUTER JOIN COM_CODE C ON A.AREA_SIGUNGU = C.CODE AND C.GRP_CODE = '0002' AND C.USE_YN = 'Y'
+		WHERE 1 = 1
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			<choose>
+				<when test="SCH_TYPE == 'A'.toString()">
+					AND (
+							B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+						)
+				</when>
+				<when test="SCH_TYPE == 'B'.toString()">
+					AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<otherwise>
+					AND (
+							B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	
+	<select id="getAmcApt_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				  TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.MST_BOARD_SEQ
+						, A.APT_NM
+						, A.AREA_SIDO
+						, A.AREA_SIGUNGU
+						, A.ZIP_NO
+						, A.ADDR1
+						, A.ADDR2
+						, A.X_LOCATION
+						, A.Y_LOCATION
+						, A.DEL_YN
+						, CASE WHEN A.DEL_YN = 'Y' THEN '삭제' ELSE '정상' END AS DEL_YN_NM
+						, A.VIEW_CNT
+						, A.REG_NICK
+						, A.REG_ID
+						, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE 
+						, B.CODENM AS SIDO_NM
+						, C.CODENM AS SIGUNGU_NM
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '01' LIMIT 1) AS BOARD_SEQ01
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '02' LIMIT 1) AS BOARD_SEQ02
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '03' LIMIT 1) AS BOARD_SEQ03
+					FROM APT_BOARD_MSTR A LEFT OUTER JOIN COM_CODE B ON A.AREA_SIDO = B.CODE AND B.GRP_CODE = '0001' AND B.USE_YN = 'Y'
+					                      LEFT OUTER JOIN COM_CODE C ON A.AREA_SIGUNGU = C.CODE AND C.GRP_CODE = '0002' AND C.USE_YN = 'Y' 
+					WHERE 1 = 1
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						<choose>
+							<when test="SCH_TYPE == 'A'.toString()">
+								AND (
+										B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+									)
+							</when>
+							<when test="SCH_TYPE == 'B'.toString()">
+								AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<otherwise>
+								AND (
+										B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+									)
+							</otherwise>
+						</choose>
+					</if>
+					ORDER BY A.MST_BOARD_SEQ DESC
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY MST_BOARD_SEQ DESC
+	</select>
+	
+	
+	<select id="getAptBoard_Detail" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  A.BOARD_SEQ
+			, A.APT_BOARD_TYPE
+			, CASE WHEN A.APT_BOARD_TYPE = '01' THEN '단지정보'
+			       WHEN A.APT_BOARD_TYPE = '02' THEN '세대정보'
+			       WHEN A.APT_BOARD_TYPE = '03' THEN '평면도정보' END AS APT_BOARD_TYPE_NM
+			, B.APT_NM
+			, B.AREA_SIDO
+			, B.AREA_SIGUNGU
+			, B.ZIP_NO
+			, B.ADDR1
+			, B.ADDR2
+			, A.CONTENTS
+			, B.X_LOCATION
+			, B.Y_LOCATION
+			, A.DEL_YN
+			, CASE WHEN A.DEL_YN = 'Y' THEN '삭제' ELSE '정상' END AS DEL_YN_NM
+			, B.VIEW_CNT
+			, B.REG_NICK
+			, B.REG_ID
+			, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE
+		FROM APT_BOARD_INFO A INNER JOIN APT_BOARD_MSTR B ON A.MST_BOARD_SEQ = B.MST_BOARD_SEQ
+		WHERE A.BOARD_SEQ = #{BOARD_SEQ}
+		AND A.MST_BOARD_SEQ = #{MST_BOARD_SEQ}
+	</select>
+	
+	
+	<select id="getAptBoard_Mstr_Detail" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  A.MST_BOARD_SEQ
+			, A.APT_NM
+			, A.AREA_SIDO
+			, A.AREA_SIGUNGU
+			, A.ZIP_NO
+			, A.ADDR1
+			, A.ADDR2
+			, A.X_LOCATION
+			, A.Y_LOCATION
+			, A.DEL_YN
+			, CASE WHEN A.DEL_YN = 'Y' THEN '삭제' ELSE '정상' END AS DEL_YN_NM
+			, A.VIEW_CNT
+			, A.REG_NICK
+			, A.REG_ID
+			, A.APT_ERECT_CODE
+			, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE 
+		FROM APT_BOARD_MSTR A 
+		WHERE A.MST_BOARD_SEQ = #{MST_BOARD_SEQ}
+	</select>
+	
+	
+	<update id="AptBoardDelYn_Update">
+		UPDATE APT_BOARD_MSTR SET
+			DEL_YN = 'Y'
+		WHERE MST_BOARD_SEQ = #{MST_BOARD_SEQ} 
+	</update>
+	
+	
+	<select id="getaptInfo1_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM APT_BOARD_MSTR A LEFT OUTER JOIN COM_CODE B ON A.AREA_SIDO = B.CODE AND B.GRP_CODE = '0001' AND B.USE_YN = 'Y'
+					          LEFT OUTER JOIN COM_CODE C ON A.AREA_SIGUNGU = C.CODE AND C.GRP_CODE = '0002' AND C.USE_YN = 'Y' 
+		WHERE 1 = 1
+		AND A.DEL_YN = 'N'
+<!-- 		AND A.APT_BOARD_TYPE = #{APT_BOARD_TYPE} -->
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			<choose>
+				<when test="SCH_TYPE == 'A'.toString()">
+					AND (
+							B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+						)
+				</when>
+				<when test="SCH_TYPE == 'B'.toString()">
+					AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<otherwise>
+					AND (
+							B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+							OR
+							A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select>
+	
+	
+	<select id="getaptInfo1_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.MST_BOARD_SEQ
+						, A.APT_NM
+						, A.AREA_SIDO
+						, A.AREA_SIGUNGU
+						, A.ZIP_NO
+						, A.ADDR1
+						, A.ADDR2
+						, A.X_LOCATION
+						, A.Y_LOCATION
+						, A.DEL_YN
+						, CASE WHEN A.DEL_YN = 'Y' THEN '삭제' ELSE '정상' END AS DEL_YN_NM
+						, A.VIEW_CNT
+						, A.REG_NICK
+						, A.REG_ID
+						, DATE_FORMAT(A.REGDATE, '%Y-%m-%d') REGDATE
+						, B.CODENM AS SIDO_NM
+						, C.CODENM AS SIGUNGU_NM
+						, D.CODENM AS APT_ERECT_NM
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '01' LIMIT 1) AS BOARD_SEQ01
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '02' LIMIT 1) AS BOARD_SEQ02
+						, (SELECT BOARD_SEQ FROM APT_BOARD_INFO WHERE A.MST_BOARD_SEQ = MST_BOARD_SEQ AND APT_BOARD_TYPE = '03' LIMIT 1) AS BOARD_SEQ03
+					FROM APT_BOARD_MSTR A LEFT OUTER JOIN COM_CODE B ON A.AREA_SIDO = B.CODE AND B.GRP_CODE = '0001' AND B.USE_YN = 'Y'
+								          LEFT OUTER JOIN COM_CODE C ON A.AREA_SIGUNGU = C.CODE AND C.GRP_CODE = '0002' AND C.USE_YN = 'Y' 
+								          LEFT OUTER JOIN COM_CODE D ON A.APT_ERECT_CODE = D.CODE AND D.GRP_CODE = '0003' AND D.USE_YN = 'Y' 
+					WHERE 1 = 1
+					AND A.DEL_YN = 'N'
+<!-- 					AND A.APT_BOARD_TYPE = #{APT_BOARD_TYPE} -->
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						<choose>
+							<when test="SCH_TYPE == 'A'.toString()">
+								AND (
+										B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+									)
+							</when>
+							<when test="SCH_TYPE == 'B'.toString()">
+								AND A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<when test="SCH_TYPE == 'C'.toString()">
+								AND D.CODENM LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<otherwise>
+								AND (
+										B.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										C.CODENM LIKE CONCAT('%', #{SCH_WORD},'%') 
+										OR
+										A.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+										OR
+										D.CODENM LIKE CONCAT('%', #{SCH_WORD},'%')
+									)
+							</otherwise>
+						</choose>
+					</if>
+					ORDER BY A.MST_BOARD_SEQ DESC
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY MST_BOARD_SEQ DESC
+	</select>
+	
+	
+	
+	<update id="setComAptInfoViewCnt_Update">
+		UPDATE APT_BOARD_MSTR SET
+			VIEW_CNT = VIEW_CNT + 1
+		WHERE MST_BOARD_SEQ = #{MST_BOARD_SEQ}
+	</update>
+	
+	
+</mapper>

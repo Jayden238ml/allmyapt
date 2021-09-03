@@ -1,0 +1,880 @@
+﻿@charset "utf-8";
+
+
+/* 테이블 및 게시물옵션  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* 스크롤 */
+.tableScroll {overflow:auto !important;}
+
+/* 테이블라인 */
+.lineTop {border-top:1px solid #e4e4e4 !important;}
+.lineBtm {border-bottom:1px solid #e4e4e4 !important;}
+.lineLeft {border-left:1px solid #e4e4e4 !important;}
+.lineRight {border-right:1px solid #e4e4e4 !important;}
+
+/* 검색테이블 - 기본형 */
+.searchTable {width:100%; margin-bottom:20px; overflow:hidden;}
+.searchTable table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-left:#ddd 2px solid; border-top:#ddd 2px solid; border-right:#ddd 2px solid; border-bottom:#ddd 1px solid; background:#f7f8fc;}
+.searchTable table th {padding:7px 10px 8px 35px; text-align:left; font-size:18px; font-weight:500; color:#333; border-bottom:#ddd 1px solid; background:url('../images/btnIcn/icn_search.png') 15px center no-repeat;}
+.searchTable table th.stBtn {font-size:15px; padding:7px 10px 8px 10px; text-align:center; border-left:#ddd 1px solid; background:none;}
+.searchTable table td {padding:12px 10px 12px 15px; border-bottom:#ddd 1px solid; background:#fff;}
+
+/* 검색테이블 - 검색목록이 많을때 */
+.searchTableLot {width:100%; margin-bottom:20px; overflow:hidden;}
+.searchTableLot table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-left:#ddd 2px solid; border-top:#ddd 2px solid; border-right:#ddd 2px solid; border-bottom:#ddd 1px solid;}
+.searchTableLot table th {padding:15px; text-align:left; font-size:20px; font-weight:500; color:#333; border-bottom:#ddd 1px solid; background:url('../images/btnIcn/icn_search.png') 15px center no-repeat;}
+.searchTableLot table th.stBtn {padding:7px 10px 8px 10px; text-align:center; border-left:#ddd 1px solid; background:none;}
+.searchTableLot table td {padding:12px 10px 12px 15px; border-bottom:#ddd 1px solid;}
+
+/* 리스트형태 - 목록[스크롤시] */
+.tableListTitle {overflow:hidden;}
+.tableListTitle table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#838383 1px solid; border-left:#e4e4e4 1px solid;}
+.tableListTitle table th {padding:10px 0 10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+
+/* 리스트형태 - 내용[스크롤시] */
+.tableListCtn {height:300px; overflow:auto;}
+.tableListCtn table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-left:#e4e4e4 1px solid;}
+.tableListCtn table td {padding:5px 5px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.tableListCtn table th {padding:5px 5px 5px 15px; text-align:left; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableListCtn table tbody a {color:#0f21a6;}
+
+/* 리스트형태 - 기본형 */
+.tableList {overflow:hidden;}
+.tableList table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.tableList table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.tableList table thead th:first-child {background:none;}
+.tableList table tbody td {min-height:5px; padding:8px 5px;  text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.tableList table tbody th {min-height:5px; padding:8px 10px 8px 15px;  text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.tableList table tbody th h1 {font-size:16px; font-weight:500;}
+.tableList table tbody th h1 a {color:#333;}
+.tableList table tbody th h1 a:hover {color:#b52026;}
+.tableList table tbody th h2 {margin-top:7px; font-size:13px; color:#999;}
+.tableList table tbody a {color:#0f21a6;}
+
+/* 리스트형태 - 기본형 */
+.tableListSmall {overflow:hidden;}
+.tableListSmall table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.tableListSmall table thead th {font-size:13px; padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.tableListSmall table thead th:first-child {background:none;}
+.tableListSmall table tbody td {font-size:13px; min-height:5px; padding:5px 5px;  text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.tableListSmall table tbody th {font-size:13px; min-height:5px; padding:5px 10px 5px 15px;  text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.tableListSmall table tbody th h1 {font-size:16px; font-weight:500;}
+.tableListSmall table tbody th h1 a {color:#333;}
+.tableListSmall table tbody th h1 a:hover {color:#b52026;}
+.tableListSmall table tbody th h2 {margin-top:7px; font-size:13px; color:#999;}
+.tableListSmall table tbody a {color:#0f21a6;}
+
+.tableListScroll {overflow:auto;}
+.tableListScroll table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#838383 1px solid; border-left:#e4e4e4 1px solid;}
+.tableListScroll table thead th {padding:10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableListScroll table tbody td {padding:8px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.tableListScroll table tbody th {padding:8px; text-align:left;border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableListScroll table tbody td li{background:url('../images/btnIcn/icn_dot1.gif') 0 10px no-repeat; padding-left:10px;}
+.tableListScroll table tbody .tbodyTitle {padding:8px; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.tableListScroll table tfoot td {padding:10px 0 10px 0; font-size:16px; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#838383 1px solid; border-top:#838383 1px solid;}
+
+.tableListScrollSmall {overflow:auto;}
+.tableListScrollSmall table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#838383 1px solid; border-left:#e4e4e4 1px solid;}
+.tableListScrollSmall table thead th {font-size:12px; padding:10px 0 10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableListScrollSmall table tbody td {font-size:12px; padding:8px 5px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.tableListScrollSmall table tbody th {font-size:12px; padding:8px 5px 8px 15px; text-align:left;border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableListScrollSmall table tbody td li{font-size:12px;background:url('../images/btnIcn/icn_dot1.gif') 0 10px no-repeat; padding-left:10px;}
+.tableListScrollSmall table tbody .tbodyTitle {padding:8px; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.tableListScrollSmall table tbody a {color:#0f21a6;}
+.tableListScrollSmall table tfoot td {padding:10px 0 10px 0; font-size:16px; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#838383 1px solid; border-top:#838383 1px solid;}
+.tableListScrollSmall table thead th a.sort-link {color: #0969b3; margin-right: 5px;}
+.tableListScrollSmall table thead th a.sort-link:hover {text-decoration: underline;}
+
+
+
+/* 리스트형태 - 박스형[라인] */
+.tableListBox {overflow:hidden;}
+.tableListBox table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-right:#e4e4e4 1px solid; background:#f7f8fc;}
+.tableListBox table thead th {padding:12px 6px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; border-left:#e4e4e4 1px solid;}
+.tableListBox table tbody td {min-height:5px; padding:8px 5px; text-align:center; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;} 
+.tableListBox table tbody th {min-height:5px; padding:5px 8px; text-align:left; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;}
+.tableListBox table tfoot td {min-height:5px; padding:5px; text-align:center; font-weight:500; color:#333; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#f1fefe;} 
+.tableListBox table tbody a {color:#00008b;}
+
+/* 리스트형태 - 박스형[목록-긴라인 / 내용-라인있음] */
+.tableListBoxLine {overflow:hidden;}
+.tableListBoxLine table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#585858 2px solid; border-right:#e4e4e4 1px solid; background:#f7f8fc;}
+.tableListBoxLine table thead th {padding:12px 8px; font-weight:500; color:#333; letter-spacing:-1px; text-align:center; border-bottom:#585858 1px solid; border-left:#e4e4e4 1px solid;} 
+.tableListBoxLine table tbody td {min-height:20px; padding:8px; text-align:center; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;} 
+.tableListBoxLine table tbody th {min-height:20px; padding:8px 8px 8px 15px; text-align:left; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;}
+.tableListBoxLine table tfoot td {padding:15px 8px; text-align:center; color:#fff; font-size:16px; border-bottom:#666 1px solid; border-left:#666 1px solid; background:#333;} 
+.tableListBoxLine table tfoot td:first-child {border-left:none;}
+
+/* 리스트형태 - 박스형[라인-목록타이틀포함] */
+.tableListLine {overflow:hidden;}
+.tableListLine table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.tableListLine table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.tableListLine table thead th:first-child {background:none;} 
+.tableListLine table tbody td {min-height:5px; padding:5px; text-align:center; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;} 
+.tableListLine table tbody th {min-height:5px; padding:5px 8px 5px 15px; text-align:left; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;}
+.tableListLine table tbody a {color:#0f21a6;}
+
+/* 리스트 - 갤러리형식 */
+.galleryList {border-top:#dcdcdc 1px solid; border-bottom:#dcdcdc 1px solid; padding:10px 0 20px 0; overflow:hidden;}
+.galleryList ul {width:100%; cursor:pointer; overflow:hidden;}
+.galleryList ul li {float:left; width:22%; margin:0 1.5%;}
+.galleryList ul li > div {height:105px; padding-top:35px; text-align:center; border:#e5e5e5 1px solid; background-size:contain !important; background-repeat:no-repeat !important;}
+.galleryList ul li > p {margin:10px 0 20px 0; text-align:center;}
+
+/* 전공진로가이드 */
+.boardNL {border-top:1px solid #333; border-bottom:1px solid #ddd; overflow:hidden;}
+.boardNL > ul {overflow:hidden;}
+.boardNL > ul:after {content:""; display:block; clear:both;}
+.boardNL > ul > li {float:left; width:50%; box-sizing:border-box; padding:20px 15px; border-bottom:1px solid #ddd; overflow:hidden;}
+.boardNL > ul > li:after {content:""; display:block; clear:both;}
+.boardNL > ul > li > div.imgNL {float:left; width:158px; height:218px; margin-right:30px; border:1px solid #e5e5e5; cursor:pointer; overflow:hidden;}
+.boardNL > ul > li > div.infoNL {position:relative; float:right; height:220px; box-sizing:border-box; padding:10px 0; width:calc(100% - 190px); width:-webkit-calc(100% - 190px);}
+.boardNL > ul > li > div.infoNL > h4 {margin-bottom:15px;}
+.boardNL > ul > li > div.infoNL > h4 > a {display:block; color:#333; font-size:18px; font-weight:500; white-space:nowrap; text-overflow:ellipsis; overflow:hidden;}
+.boardNL > ul > li > div.infoNL > h4 > a:hover {color:#005596;}
+.boardNL > ul > li > div.infoNL > p {display:block; display:-webkit-box; height:120px; line-height:20px; white-space:normal; text-overflow:ellipsis; word-break:keep-all; -webkit-line-clamp:6; -webkit-box-orient:vertical; margin-bottom:15px; overflow:hidden;}
+.boardNL > ul > li > div.infoNL > a {position:absolute; right:0; bottom:0; display:inline-block; font-size:15px; color:#333; padding:6px 12px; border:1px solid #e5e5e5; border-radius:3px;}
+.boardNL > ul > li > div.infoNL > a:hover {border:1px solid #c70102;}
+.boardNL > ul > li > div.infoNL > a span {color:#c70102;}
+
+
+/* 페이징 */
+.listPaging {width:100%; margin-top:20px; text-align:center;}
+.listPaging a {margin:0 1px 0 1px;}
+.listPaging a span {display:inline-block; height:23px; padding:5px 8px 0 8px; text-align:center; line-height:14px; border:#ccc 1px solid;}
+.listPaging a span:hover {border:#5a5a5a 1px solid; background:#707070; color:#fff;}
+.listPaging a .on {height:23px; padding:5px 8px 0 8px; text-align:center; border:#5a5a5a 1px solid; background:#707070; color:#fff;}
+
+/* 세부내용 및 등록형태 - 기본형 */
+.tableView {overflow:hidden;}
+.tableView table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-left:#e4e4e4 1px solid;}
+.tableView table th {padding:8px 10px; color:#555; font-weight:500; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.tableView table th em {font-size:16px; font-weight:500; font-style:normal; color:#de1819;}
+.tableView table td {padding:10px; background:#fff; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.tableView table td > span {color:#000000;}
+.tableView table td.tvArea {padding:20px;}
+.tableView table td table {width:100%; table-layout:fixed; border-top:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid;}
+.tableView table td table thead th {padding:10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.tableView table td table tbody td {padding:8px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+
+/* 세부내용 및 등록형태 - 박스형 */
+.tableViewBox {overflow:hidden;}
+.tableViewBox > table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-left:#e4e4e4 1px solid;}
+.tableViewBox > table > tbody > tr > th {min-height:5px; padding:8px 10px; color:#333; font-weight:500; text-align:center; letter-spacing:-1px; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.tableViewBox > table > tbody > tr > th em {font-size:16px; font-weight:500; font-style:normal; color:#de1819;}
+.tableViewBox > table > tbody > tr > td {min-height:5px; padding:8px 10px; background:#fff; border-bottom:1px solid #e4e4e4; border-right:#e4e4e4 1px solid;}
+
+/* 상세 */
+.viewArea {width:100%;}
+.viewArea .bvInfo {padding:25px; border:#e3e3e3 1px solid; background:#f7f8fc;}
+.viewArea .bvInfo .infoTitle {width:100%; margin-bottom:20px; padding-bottom:20px; border-bottom:#e4e4e4 1px solid; overflow:hidden;}
+.viewArea .bvInfo .infoTitle dt {float:left; width:90%; font-size:18px; font-weight:500; color:#333;}
+.viewArea .bvInfo .infoTitle dd {float:right; width:10%; text-align:right;}
+.viewArea .bvInfo .infoArea {width:100%; margin:5px 0; font-size:14px; color:#333; overflow:hidden;}
+.viewArea .bvInfo .infoArea dt {float:left;}
+.viewArea .bvInfo .infoArea dd {float:right; padding-right:2px;}
+.viewArea .bvInfo .infoArea span {color:#878787;}
+.viewArea .bvCtn {padding:25px 20px; border-left:#e4e4e4 1px solid; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.viewArea .bvBtn {margin:15px 0 30px 0; overflow:hidden;}
+.viewArea .bvBtn dt {float:left;}
+.viewArea .bvBtn dd {float:right;}
+
+/* 상세 - 이전글다음글 */
+.viewPN {overflow:hidden;}
+.viewPN table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid;}
+.viewPN table th {padding:8px 10px 8px 15px; background:#f7f8fc; color:#333; font-weight:500; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4; text-align:left;}
+.viewPN table td {padding:8px 10px 8px 10px; background:#fff; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.viewPN table td span {font-weight:500; color:#a14d56;}
+
+/* 덧글 - 덧글갯수 */
+.replyCnt {margin-top:15px; padding:12px 15px 12px 15px; font-size:14px; color:#333; font-weight:500; border:#e4e4e4 1px solid; background:#f9f9f9;}
+.replyCnt span {color:#e74c00;}
+
+/* 덧글 - 리스트 */
+.replyList {margin:10px 10px 15px 10px;}
+.replyList div {margin-top:15px; border-bottom:#e4e4e4 1px solid;}
+.replyList div dl {width:100%; overflow:hidden;}
+.replyList div dl dt {float:left;}
+.replyList div dl dt h1 {padding-left:16px; font-size:14px; color:#333; font-weight:500; background:url('../images/btnIcn/icn_cmt.gif') 0 3px no-repeat;}
+.replyList div dl dt h2 {font-size:11px; color:#999;}
+.replyList div dl dd {float:right;}
+.replyList div p {padding:10px 0 15px 0;}
+
+/* 덧글 - 등록 */
+.replyAdd {margin:25px 0 15px 0;}
+.replyAdd dl {width:100%; overflow:hidden;}
+.replyAdd dl dt {float:left; width:665px;}
+.replyAdd dl dt textarea {width:100%; height:78px; border:#e1e1e1 2px solid;}
+.replyAdd dl dd {float:right; width:100px;}
+.replyAdd dl dd input {width:100%; height:84px; color:#fff; font-size:12px; font-weight:500; text-align:center; border:#777d8c 1px solid; border-radius:2px; background:#525a6e;}
+.replyAdd dl dd input:hover {color:#f5f5f5; border:#fff 1px dashed; background:#2a5b80;}
+
+/* 달력 */
+.calendar {overflow:hidden;}
+.calendar .calDate {height:59px; background:url('../images/img/cal_dateBg.gif') no-repeat; background-size:100%; border-radius:2px 2px 0 0; overflow:hidden;}
+.calendar .calDate dl {width:280px; margin:0 auto; overflow:hidden;}
+.calendar .calDate dl dt {float:left; width:40px; padding-top:16px; text-align:center;}
+.calendar .calDate dl dd {float:left; width:200px; padding-top:12px; text-align:center; font-size:28px; line-height:30px; font-weight:500; color:#fff;}
+.calendar .calDate a {color:#fff; letter-spacing:-1px;}
+.calendar .calDate a:hover {color:#8bbcfe;}
+.calendar .calYM {width:100%; height:60px; /* background:url('../images/btnIcn/bg_tab_on.gif'); */ background:#034a72; border-radius:4px 4px 0 0; overflow:hidden;}
+.calendar .calYM > dt {float:left; width:150px;}
+.calendar .calYM > dd {float:left; width:100%; text-align:center; /* line-height:28px; */ color:#fff; font-size:24px;}
+
+
+.calendar table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; font-size:13px; border-left:#e4e4e4 1px solid;}
+.calendar table thead th {padding:10px 0 10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.calendar table tbody td {height:100px; padding:8px; vertical-align:top; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.calendar table tbody td:hover {padding:6px; border:#b9373c 2px solid; background:#f7f8fc;}
+.calendar table tbody td p {margin-bottom:10px; padding-bottom:8px; font-weight:500; border-bottom:#ddd 1px dashed;}
+.calendar table tbody td p span {font-size:11px; color:#ccc; font-weight:normal;}
+.calendar table tbody td p img {margin-top:-3px;}
+.calendar table tbody td dl {display:none; margin-top:5px; overflow:hidden;}
+.calendar table tbody td dl dt {padding:3px 0 3px 0; text-align:center; border:#005596 1px solid; background:#f9fbff;}
+.calendar table tbody td dl dt a {display:block; padding:1px 0; color:#999;}
+.calendar table tbody td dl dt a:hover {color:#005596;}
+.calendar table tbody td dl dd {padding-bottom:2px; text-align:center; font-size:11px; background:#005596; cursor:pointer;}
+.calendar table tbody td dl dd a {display:block; color:#fff;}
+.calendar table tbody td ul {overflow:hidden;}
+.calendar table tbody td ul li {padding:3px 0 3px 15px; background:url('../images/btnIcn/icn_dot1.gif') 5px 12px no-repeat; cursor:pointer;}
+.calendar table tbody td ul li:hover {color:#b42329;}
+
+
+/* 달력-주간 */
+.calWeek {overflow:hidden;}
+.calWeek .calDate {height:59px; background:url('../images/img/cal_dateBg.gif') no-repeat; background-size:100%; overflow:hidden;}
+.calWeek .calDate dl {width:460px; margin:0 auto; overflow:hidden;}
+.calWeek .calDate dl dt {float:left; width:40px; padding-top:18px; text-align:center;}
+.calWeek .calDate dl dd {float:left; width:380px; padding-top:10px; text-align:center; font-size:22px; line-height:34px; font-weight:500; color:#fff;}
+.calWeek table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#838383 1px solid; border-left:#e4e4e4 1px solid;}
+.calWeek table thead th {padding:15px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.calWeek table tbody td {padding:15px 5px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.calWeek table tbody td.bgCol1 {font-weight:500; background:#e7f1ff;}
+.calWeek table tbody td.bgCol1 a {color:#333;}
+.calWeek table tbody td.bgCol2 {font-weight:500; background:#ffe7ec;}
+.calWeek table tbody td.bgCol2 a {color:#333;}
+.calWeek table tbody td.bgCol3 {color:#333; font-weight:500; background:#e7ffef;}
+.calWeek table tbody td.bgCol3 a {color:#333;}
+
+
+/* 통계 - 박스형[라인] */
+.tableListBoxStat {overflow:hidden;}
+.tableListBoxStat table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-right:#e4e4e4 1px solid; /* background:#f7f8fc; */}
+.tableListBoxStat table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; border-left:#e4e4e4 1px solid; background:#f7f8fc;}
+.tableListBoxStat table tbody td {min-height:35px; padding:8px; /* text-align:center; */ border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; /* background:#fff; */ overflow:hidden;} 
+.tableListBoxStat table tbody th {min-height:35px; padding:8px 8px 8px 15px; text-align:left; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; /* background:#fff; */}
+.tableListBoxStat table tfoot td {min-height:35px; padding:8px; text-align:center; font-weight:500; color:#333; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#f1fefe;} 
+.sum{ background-color: #E0F0FF; }
+.totSum{ background-color: #f1fefe;}
+
+/* 로드맵 도식화 */
+.roadMapGrid {overflow:hidden;}
+.roadMapGrid table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; padding:5px;}
+.roadMapGrid table thead th {padding:15px 8px; font-weight:500; font-size:20px; color:#333; text-align:center; border:#FFFFFF 5px solid; background:#f7f8fc;}
+.roadMapGrid table tbody td {min-height:50px; padding:8px; border:#FFFFFF 5px solid; overflow:hidden;} 
+
+.roadMapGrid table tbody tr {min-height:50px; padding:8px; border:#FFFFFF 5px solid; overflow:hidden; font-weight:500;} 
+.roadMapGrid table tbody tr:nth-child(1) {background:#E6FFFF;} 
+.roadMapGrid table tbody tr:nth-child(2) {background:#93CDDD;} 
+.roadMapGrid table tbody tr:nth-child(3) {background:#31859C;color:#FFFFFF; } 
+.roadMapGrid table tbody tr:nth-child(4) {background:#215968;color:#FFFFFF; } 
+
+
+.ellipsis { /*table 사용 시 table-layout:fixed; 설정 되어 있어야 함*/
+	white-space:nowrap;
+	overflow:hidden;			/* "overflow" value must be different from "visible" */
+	text-overflow:ellipsis;		/* IE, Safari */
+	-o-text-overflow:ellipsis;	/* Opera under 10.7 */
+	-ms-text-overflow:ellipsis;
+	-moz-binding: url('ellipsis.xml#ellipsis');
+}
+.strCut {
+	float: left;
+	max-width: -moz-calc(100% - 20px);
+	max-width: -webkit-calc(100% - 20x);
+	max-width: calc(100% - 20px);
+}
+
+/* 자기주도활동 테이블 */
+.layertableView {overflow:hidden;}
+.layertableView table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-left:#e4e4e4 1px solid;}
+.layertableView table th {padding: 5px 5px; color:#555; font-weight:500; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.layertableView table th em {font-size:16px; font-weight:500; font-style:normal; color:#de1819;}
+.layertableView table td {padding: 5px; background:#fff; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.layertableView table td span {color:#000000;}
+.layertableView table td.tvArea {padding:20px;}
+.layertableView table td table {width:100%; table-layout:fixed; border-top:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid;}
+.layertableView table td table thead th {padding:10px 0 10px 0; font-weight:500; color:#0b2e47; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.layertableView table td table tbody td {padding:8px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+
+
+/* 단계색상 */
+.stepBox {width:100%; border-left:#ddd 1px solid; overflow:hidden;}
+.stepBox li {float:left; width:9.1%; height:15px; border-right:#ddd 1px solid; border-top:#ddd 1px solid; border-bottom:#ddd 1px solid;}
+.stepBox li.sbColor01 {background:#d92626;}
+.stepBox li.sbColor02 {background:#d9ac26;}
+.stepBox li.sbColor03 {background:#d8d926;}
+.stepBox li.sbColor04 {background:#91bd63;}
+.stepBox li.sbColor05 {background:#1c6ba3;}
+
+.myHomeOrder {width:100%; overflow:hidden;}
+.myHomeOrder  > ul.myHome_year {position:relative; width:100%; margin:15px 0; padding-bottom:15px; border-bottom:1px dashed #e5e5e5; overflow:hidden;}
+.myHomeOrder  > ul.myHome_year > li {float:left; width:33%; box-sizing:border-box; oveflow:hidden;}
+.myHomeOrder  > ul.myHome_year > li:nth-child(1) {text-align:right;}
+.myHomeOrder  > ul.myHome_year > li:nth-child(2) {text-align:center; font-size:20px; font-weight:500; color:#222;}
+.myHomeOrder  > ul.myHome_year > li:nth-child(3) {text-align:left;}
+.myHomeOrder  > ul.myHome_year > li:nth-child(1) a {display:inline-block; position:relative;}
+.myHomeOrder  > ul.myHome_year > li:nth-child(3) a {display:inline-block; position:relative;}
+
+.myHomeOrder > ul.myHome_num {width:100%; text-align:center; margin:15px 0; box-sizing:border-box; overflow:hidden;}
+.myHomeOrder > ul.myHome_num > li {position:relative; float:left; width:21%; margin:0 2%; text-align:center;}
+.myHomeOrder > ul.myHome_num > li:after {content:""; display:inline-block; position:absolute; top:48%; right:-30px; width:20px; height:20px; background:url('../images/content/btn_next.png') no-repeat;}
+.myHomeOrder > ul.myHome_num > li:last-child:after {display:none;}
+.myHomeOrder > ul.myHome_num > li > dl {width:100%; border:1px solid #e1e1e1;}
+.myHomeOrder > ul.myHome_num > li > dl dt {font-size:15px; line-height:15px; font-weight:500; color:#252525; box-sizing:border-box; padding:10px 0; border-bottom:1px solid #e1e1e1; background:#f7f8fc;}
+.myHomeOrder > ul.myHome_num > li > dl dd {font:500 22px/22px 'NotoSansKR'; box-sizing:border-box; padding:8px 0;}
+
+/* 상담일정 달력 */
+.Concalendar {overflow:hidden;}
+.Concalendar .calDate {width:100%; height:59px; background:url('../images/img/cal_dateBg.gif') no-repeat; background-size:cover; border-radius:2px 2px 0 0; overflow:hidden;}
+.Concalendar .calDate > dl {width:100%; overflow:hidden;}
+.Concalendar .calDate > dl > dt {float:left; width:10%; padding:20px 0; font-size:14px; font-weight:500; text-align:center;}
+.Concalendar .calDate > dl > dt a {display:inline-block; color:#fff;}
+.Concalendar .calDate > dl > dt a:hover {color:#f4ad21;}
+.Concalendar .calDate > dl > dd {float:left; width:80%; text-align:center; font-size:22px; color:#fff; font-weight:500; line-height:59px;}
+.Concalendar .calDate > dl > dd br.weekDBr {display:none;}
+
+.Concalendar .calDate > li {float: left; color:#fff; padding-top:18px; font-size:14px; font-weight:500; }
+.Concalendar .calDate > li a {color:#fff;}
+.Concalendar .calDate > li:nth-child(1) {width: 25%; text-align: right; }
+.Concalendar .calDate > li:nth-child(2) {width: 50%; text-align: center; padding-top:15px; font-size:20px; line-height:26px; }
+.Concalendar .calDate > li:nth-child(3) {width: 25%; text-align: left;}
+
+.Concalendar .calYM {width:100%; height:60px; background:url('../images/btnIcn/bg_tab_on.gif'); border-radius:4px 4px 0 0; overflow:hidden;}
+.Concalendar .calYM > dt {float:left; width:150px;}
+.Concalendar .calYM > dd {float:left; width:665px; padding-top:14px; text-align:center; line-height:28px; color:#fff; font-size:24px;}
+
+.Concalendar table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#838383 1px solid; border-left:#e4e4e4 1px solid;}
+.Concalendar table thead th {padding:10px 0; font-weight:500; color:#0b2e47; text-align:center; background:#f1f1f6; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.Concalendar table tbody tr.calChkBg {background:#d5d5d5;}
+.Concalendar table tbody td {height:20px; padding:8px; vertical-align:top; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.Concalendar table tbody td:first-child { font-weight:500; font-size:14px;}
+.Concalendar table tbody td:first-child a {color:#000;}
+/* .Concalendar table tbody td:hover {padding:6px; border:#0264b6 2px solid; background:#f9f9f9;} */
+.Concalendar table tbody td p {margin-bottom:10px; padding-bottom:8px; font-weight:500; border-bottom:#ddd 1px dashed;}
+.Concalendar table tbody td p span {font-size:11px; color:#ccc; font-weight:normal;}
+.Concalendar table tbody td p img {margin-top:-3px;}
+.Concalendar table tbody td dl {display:none; margin-top:5px; overflow:hidden;}
+.Concalendar table tbody td dl dt {padding:3px 0; text-align:center; color:#f87509; border:#f87509 1px solid; background:#fff6e7;}
+.Concalendar table tbody td dl dd {padding:3px; font-size:12px; text-align:center; background:#fff;}
+.Concalendar table tbody td dl dd a {display:block; padding:1px 0; color:#f87509;}
+.Concalendar table tbody td ul {overflow:hidden;}
+.Concalendar table tbody td ul li {padding:3px 0 3px 8px; background:url('../images/btnIcn/icn_dot1.gif') 0 12px no-repeat; cursor:pointer;}
+.Concalendar table tbody td ul li:hover {color:#0264b6;}
+.Concalendar br.conCalBr {display:none;}
+.Concalendar br.conNMBr {display:none;}
+
+.calendar table tbody td dl dt a:hover {color:#b6580b;}
+.calendar table tbody td dl dd {padding-bottom:2px; text-align:center; font-size:11px; background:#f87509; cursor:pointer;}
+.calendar table tbody td dl dd a {display:block; color:#fff;}
+.calendar table tbody td ul {overflow:hidden;}
+.calendar table tbody td ul li {padding:3px 0 3px 15px; background:url('../images/btnIcn/icn_dot1.gif') 5px 12px no-repeat; cursor:pointer;}
+.calendar table tbody td ul li:hover {color:#b42329;}
+
+.bbsConDate {overflow:hidden;}
+.bbsConDate table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.bbsConDate table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:#ccc 1px solid; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsConDate table thead th:first-child {background:none;}
+.bbsConDate table tbody td {min-height:5px; padding:8px 5px;  text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.bbsConDate table tbody th {min-height:5px; padding:8px 10px;  text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.bbsConDate table tbody td.con_time_count {color:#555; letter-spacing:-1px;}
+.bbsConDate table tbody td.con_time_count span {color:#777;}
+.bbsConDate table tbody td.con_time_count br.con_time {display:none;}
+.bbsConDate table tbody td.con_apply > a {display:block; width:100%; height:22px; font-size:12px; line-height:12px; color:#fff; text-align:center; box-sizing:border-box; padding:5px; border-radius:2px; background:#099cd2;}
+.bbsConDate table tbody td.con_apply > a:hover {background:#78849e;}
+
+/* 상담일정 달력(주단위) */
+.conCalendar_new {overflow:hidden;}
+.conCalendar_new > ul {width:100%; box-sizing:border-box; padding:10px; background:url('../images/img/cal_dateBg.gif') no-repeat; background-size:cover; border-radius:2px 2px 0 0; overflow:hidden;}
+.conCalendar_new > ul > li {float:left; width:50%; box-sizing:border-box; overflow:hidden;}
+.conCalendar_new > ul > li:nth-child(1) {border-right:1px solid rgba(255,255,255,0.2);}
+.conCalendar_new > ul > li > dl {width:100%; box-sizing:border-box; padding:10px; overflow:hidden;}
+.conCalendar_new > ul > li > dl.month_area {overflow:hidden;}
+.conCalendar_new > ul > li > dl.month_area > dt.month_prev {float:left; width:15%; text-align:center;}
+.conCalendar_new > ul > li > dl.month_area > dt.month_next {float:right; width:15%; text-align:center;}
+.conCalendar_new > ul > li > dl.month_area > dt a {display:inline-block; color:#fff;}
+.conCalendar_new > ul > li > dl.month_area > dd {float:left; width:70%; min-height:23px; box-sizing:border-box; text-align:center;}
+.conCalendar_new > ul > li > dl.month_area > dd strong {display:inline-block; text-align:center; color:#fff; font-size:18px; font-weight:500; margin-right:2%;}
+.conCalendar_new > ul > li > dl.month_area > dd a {display:inline-block; box-sizing:border-box; padding:5px; color:#fff; font-size:13px; line-height:13px; border-radius:2px; background:#b42329;}
+.conCalendar_new > ul > li > dl.week_area {overflow:hidden;}
+.conCalendar_new > ul > li > dl.week_area > dt.week_prev {float:left; width:15%; text-align:center;}
+.conCalendar_new > ul > li > dl.week_area > dt.week_next {float:right; width:15%; text-align:center;}
+.conCalendar_new > ul > li > dl.week_area > dt a {display:inline-block; color:#fff;}
+.conCalendar_new > ul > li > dl.week_area > dd {float:left; width:70%; min-height:23px; text-align:center;}
+.conCalendar_new > ul > li > dl.week_area > dd strong {display:inline-block; text-align:center; color:#fff; font-size:18px; font-weight:500;}
+.conCalendar_new > ul > li > dl.week_area > dd strong br {display:none;}
+.conCalendar_new > ul > li > dl.week_area > dd a {display:inline-block; box-sizing:border-box; padding:4px 5px; margin-left:10px; color:#fff; font-size:13px; line-height:13px; border-radius:3px; background:#b42329;}
+
+.conCalendar_new > div {width:100%; box-sizing:border-box; border:1px solid #ddd; overflow:hidden;}
+.conCalendar_new > div > table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; background:#fff;}
+.conCalendar_new > div > table thead th {text-align:center; box-sizing:border-box; padding:10px 5px; border-left:1px solid #ddd; background:#f7f8fc;}
+.conCalendar_new > div > table thead th:first-child {border-left:none;}
+.conCalendar_new > div > table thead th a {display:inline-block; box-sizing:border-box; padding:3px 5px 4px; margin-left:3px; color:#44587b; font-size:13px; line-height:13px; border-radius:2px; border:1px solid #ddd; background:#fff;}
+.conCalendar_new > div > table tbody td {vertical-align:top; box-sizing:border-box; padding:5px; border-left:1px solid #ddd; border-top:1px solid #ddd;}
+.conCalendar_new > div > table tbody td:first-child {border-left:none;}
+.conCalendar_new > div > table tbody td > span {display:block; text-align:left; height:26px; box-sizing:border-box; padding-bottom:5px; margin-bottom:5px; border-bottom:1px solid #eee;}
+.conCalendar_new > div > table tbody td > span a {float:right; display:inline-block; box-sizing:border-box; padding:3px 5px 4px; color:#44587b; font-size:13px; line-height:13px; border-radius:2px; border:1px solid #ddd; background:#fff;}
+.conCalendar_new > div > table tbody td > div {min-height:80px; margin-bottom:5px; padding-bottom:5px; border-bottom:1px dashed #ddd; overflow:hidden;}
+.conCalendar_new > div > table tbody td > div:last-child {margin-bottom:0; padding-bottom:0; border-bottom:none;}
+.conCalendar_new > div > table tbody td > div > strong {display:block; font-size:13px; font-weight:500; text-align:center; color:#555;}
+.conCalendar_new > div > table tbody td > div > strong br {display:none;}
+.conCalendar_new > div > table tbody td > div > div {text-align:center; margin:8px 0;}
+.conCalendar_new > div > table tbody td > div > div strong {display:inline-block; padding-bottom:3px; font-weight:500;}
+.conCalendar_new > div > table tbody td > div > div a {display:inline-block; box-sizing:border-box; padding:4px 6px; text-align:center; font-size:13px; line-height:13px; color:#fff; border-radius:2px; background:#8560a8;}
+.conCalendar_new > div > table tbody td > div > ul {width:100%; box-sizing:border-box; padding:0 5px; background:#f7f8fc;}
+.conCalendar_new > div > table tbody td > div > ul > li {font-size:13px; line-height:13px; text-align:center; padding:5px 0;}
+.conCalendar_new > div > table tbody td > a {display:block; text-align:center; font-size:13px; line-height:14px; padding:5px; color:#fff; border-radius:2px; background:#44587b;}
+
+.conCalendar_new span.con_type {display:inline-block; margin-left:5px; color:#3375ca; font-size:12px; line-height:16px; box-sizing:border-box; padding:2px 7px; border-radius:50px; border:1px solid #eee; background:#f7f8fc;}
+.conCalendar_new > div > table tbody td > div > div.con_time_box {margin:0 0 5px 0; box-sizing:border-box; padding:3px 5px; border-radius:3px; border:1px solid #eee; background:#fff; overflow:hidden;}
+.conCalendar_new > div > table tbody td > div > div.con_time_box strong {color:#555; padding:0; font-weight:normal; font-size:13px; letter-spacing:-0.5px;}
+.conCalendar_new > div > table tbody td > div > div.con_time_box > ul > li {font-size:13px; line-height:24px; color:#555; margin-top:3px; border-radius:3px; background:#f4f8ff;}
+.conCalendar_new > div > table tbody td > div > div.con_time_box > ul > li:hover span {color:#0071bd;}
+
+
+/* 리스트 - video 형식 */
+.videoListAdm {border-top:#dcdcdc 1px solid; border-bottom:#dcdcdc 1px solid; padding:25px 0 10px 0; overflow:hidden;}
+.videoListAdm ul {width:100%; cursor:pointer; overflow:hidden;}
+.videoListAdm ul li {float:left; width:23%; margin:0 1%;}
+.videoListAdm ul li div {height:125px; padding-top:45px; text-align:center; border:#e5e5e5 1px solid; background-size:cover !important; background-repeat:no-repeat !important;}
+.videoListAdm ul li h5 {height:45px; margin: 0 0 5px 0; font-weight:bold; color:#333;}
+.videoListAdm ul li p {margin-top: 0px; text-align:right; font-size:12px; }
+.videoListAdm ul li p span {text-align:right; font-size:12px;}
+
+
+/* 반응형 영역 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* PC 제외 */
+@media all and (max-width: 1200px){	
+	/* 전공진로가이드 */
+	.boardNL > ul > li > div.imgNL {margin-right:20px;}
+	.boardNL > ul > li > div.infoNL {width:calc(100% - 180px); width:-webkit-calc(100% - 180px);}
+	
+	/* 상담일정 달력 */
+	#user .Concalendar table div.tableList table col:nth-child(1) {width:50%;}
+	#user .Concalendar table div.tableList table col:nth-child(2) {width:66px;}
+	#user .Concalendar table div.tableList table tbody td {vertical-align:middle;}
+	#user .Concalendar br.conCalBr {display:block;}
+	#user .Concalendar br.conNMBr {display:block;}
+	#user .Concalendar br.weekDBr {display:none;}
+	
+	#user .bbsConDate table col:nth-child(1) {width:80%;}
+	#user .bbsConDate table col:nth-child(2) {width:55px;}
+	#user .bbsConDate table tbody td {vertical-align:middle;}
+	#user .bbsConDate table tbody td.con_time_count {font-size:13px; line-height:18px;}
+	#user .bbsConDate table tbody td.con_time_count br.con_time {display:block;}
+	
+	
+	/* 상담일정 달력(주단위) */
+	#user .conCalendar_new > ul > li {float:none; width:100%;}
+	#user .conCalendar_new > ul > li:nth-child(1) {border-right:none; border-bottom:1px solid rgba(255,255,255,0.2);}
+	
+	#user .conCalendar_new > div > table tbody td > span img {width:40%; height:auto !important;}
+	
+	/* 마이페이지-비교과담당자 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+	.myHomeOrder > ul.myHome_num > li:after {right:-26px;}
+}
+
+/* 테블릿1 */
+@media all and (max-width: 990px){
+	/* 상담일정 달력(주단위) */
+	#user .conCalendar_new > div > table tbody td > span img {width:40%;}
+	
+	/* 마이페이지 - 비교과담당자 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+	.myHomeOrder > ul.myHome_num > li:after {right:-15%;}
+}
+
+/* 테블릿2 */
+@media all and (max-width: 768px){	
+	/* 상담일정 달력 */
+	#user .Concalendar .calDate > dl > dt {width:15%; font-size:13px;}
+	#user .Concalendar .calDate > dl > dd {width:70%; font-size:18px;}
+	
+	#user .Concalendar table tbody td {padding:3px; box-sizing:border-box; overflow:hidden;}
+	#user .Concalendar table div.tableList table {display:block;}
+	#user .Concalendar table div.tableList table tbody td {display:block; width:100%; min-height:33px; box-sizing:border-box; font-size:12px; overflow:hidden;}
+	#user .Concalendar br.conCalBr {display:none;}
+	.Concalendar br.conNMBr {display:none;}
+	
+	#user .bbsConDate table {display:block;}
+	#user .bbsConDate table colgroup col {width:100% !important;}
+	#user .bbsConDate table tbody {display:block;}
+	#user .bbsConDate table tbody tr {display:block; width:100%;}
+	#user .bbsConDate table tbody td {display:block; width:100%; min-height:33px; box-sizing:border-box; font-size:12px; overflow:hidden;}
+	#user .bbsConDate table tbody td.con_time_count {min-height:45px; font-size:12px; padding:5px 3px;}
+	#user .bbsConDate table tbody td.con_time_count br.con_time {display:none;}
+	#user .bbsConDate table tbody td.con_apply {padding:5px 3px;}
+
+
+	/* 상담일정 달력(주단위) */
+	#user .conCalendar_new > ul > li > dl.month_area {padding-top:5px;}
+	#user .conCalendar_new > ul > li > dl.month_area > dt.month_prev {font-size:13px;}
+	#user .conCalendar_new > ul > li > dl.month_area > dt.month_next {font-size:13px;}
+	#user .conCalendar_new > ul > li > dl.week_area {padding-bottom:0;}
+	#user .conCalendar_new > ul > li > dl.week_area > dt.week_prev {font-size:13px;}
+	#user .conCalendar_new > ul > li > dl.week_area > dt.week_next {font-size:13px;}
+	
+	#user .conCalendar_new > div > table tbody td > span {font-size:12px;}
+	#user .conCalendar_new > div > table tbody td > span a {font-size:12px; line-height:12px;}
+	#user .conCalendar_new > div > table tbody td > span img {display:none;}
+	#user .conCalendar_new > div > table tbody td > div > strong {line-height:16px;}
+	#user .conCalendar_new > div > table tbody td > div > strong br {display:block;}
+	#user .conCalendar_new > div > table tbody td > div > div strong {font-size:13px; word-break:keep-all;}
+	#user .conCalendar_new > div > table tbody td > div > div a {padding:4px 3px; font-size:12px; line-height:12px;}
+	#user .conCalendar_new > div > table tbody td > div > ul > li {font-size:12px; line-height:12px;}
+	#user .conCalendar_new > div > table tbody td > a {font-size:12px; line-height:12px; padding:4px 3px;}
+	
+	/* 마이페이지 - 비교과담당자 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+	.myHomeOrder > ul.myHome_num > li {width:40%; margin:0 5%;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(1) {margin-bottom:10px;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(2) {margin-bottom:10px;}
+	.myHomeOrder > ul.myHome_num > li:after {right:-18%;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(2):after {right:0; top:160%; left:-135%;}
+	.myHomeOrder > ul.myHome_num > li:last-child:after {display:none;}
+}
+
+@media all and (max-width:530px) {
+	/* 전공 진로가이드 */
+	.boardNL > ul > li {float:none; width:100%;}
+}
+
+/* 모바일 */
+@media all and (max-width: 480px){
+	/* 전공 진로가이드 */
+	.boardNL > ul > li > div.imgNL {float:none; margin:0 auto;}
+	.boardNL > ul > li > div.infoNL {float:none; height:auto; padding:20px 0; width:100%;}
+	
+	/* 상담일정 달력 */
+	#user .Concalendar .calDate > dl > dt {width:20%; font-size:12px;}
+	#user .Concalendar .calDate > dl > dd {width:60%; font-size:18px; line-height:22px; padding:8px 0;}
+	#user .Concalendar .calDate > dl > dd br.weekDBr {display:block;}
+	#user .Concalendar table thead th {font-size:13px;}
+	#user .Concalendar table div.tableList table tbody td:nth-child(1) {min-height:50px;}
+	#user .Concalendar table div.tableList table tbody td:nth-child(1) a {width:50px !important; font-size:12px;}
+	#user .Concalendar table div.tableList table tbody td:nth-child(2) {padding:5px 2px; font-size:13px;}
+	#user .Concalendar table div.tableList table tbody td:nth-child(2) a {width:45px !important; font-size:11px;}
+	#user .Concalendar br.conCalBr {display:block;}
+	#user .Concalendar br.weekDBr {display:block;}
+	
+	#user .bbsConDate table tbody td.con_time_count {min-height:60px; padding:4px 3px;}
+	#user .bbsConDate table tbody td.con_time_count br.con_time {display:block;}
+	
+	
+	/* 상담일정 달력(주단위) */
+	#user .conCalendar_new > ul > li > dl {padding:5px 0;}
+	#user .conCalendar_new > ul > li > dl.month_area > dt.month_prev {width:18%;}
+	#user .conCalendar_new > ul > li > dl.month_area > dt.month_next {width:18%;}
+	#user .conCalendar_new > ul > li > dl.month_area > dd {width:64%;}
+	#user .conCalendar_new > ul > li > dl.week_area > dt.week_prev {width:18%; padding:22px 0;}
+	#user .conCalendar_new > ul > li > dl.week_area > dt.week_next {width:18%; padding:22px 0;}
+	#user .conCalendar_new > ul > li > dl.week_area > dd {float:left; width:64%; min-height:65px;}
+	#user .conCalendar_new > ul > li > dl.week_area > dd strong {display:block; margin-bottom:5px;}
+	#user .conCalendar_new > ul > li > dl.week_area > dd strong br {display:block;}
+
+	#user .conCalendar_new > div > table thead th > span {display:block;}
+	#user .conCalendar_new > div > table thead th > a {padding:3px; margin-left:0; font-size:12px; line-height:12px;}
+	#user .conCalendar_new > div > table tbody td {padding:3px;}
+	#user .conCalendar_new > div > table tbody td > span {min-height:48px; font-size:12px; text-align:center;}
+	#user .conCalendar_new > div > table tbody td > span span {display:block;}
+	#user .conCalendar_new > div > table tbody td > span a {float:none; display:block; font-size:12px; line-height:12px; padding:3px;}
+	#user .conCalendar_new > div > table tbody td > div > strong {font-size:12px; line-height:14px;}
+	#user .conCalendar_new > div > table tbody td > div > div a {word-break:keep-all;}
+	#user .conCalendar_new > div > table tbody td > a {word-break:keep-all;}
+	
+	/* 게시판 상세보기 */
+	.viewArea .bvInfo .infoArea dt {float:none;}
+	.viewArea .bvInfo .infoArea dd {float:none; margin-top:5px;}
+	
+	/* 마이페이지 - 비교과담당자 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+	.myHomeOrder > ul.myHome_num > li {width:100%; margin:5% 0; box-sizing:border-box; padding:0 20px;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(1) {margin-bottom:10px;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(2) {margin-bottom:10px;}
+	.myHomeOrder > ul.myHome_num > li:after {right:48%; left:48%; transform:rotate(90deg); top:103%;}
+	.myHomeOrder > ul.myHome_num > li:nth-child(2):after {right:48%; left:48%; top:103%;}
+	.myHomeOrder > ul.myHome_num > li:last-child:after {display:none;}
+}
+
+
+
+
+
+
+/* 반응형 테이블New /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/
+/* 테이블 상세보기 */
+.bbsView {width:100%; border-top:1px solid #231f20; overflow:hidden;}
+.bbsView table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse;}
+.bbsView table th {padding:8px 10px; color:#555; font-weight:500; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:1px solid #e4e4e4;}
+.bbsView table tbody th {color:#555; font-weight:500; text-align:center; word-break:keep-all; padding:10px 5px; box-sizing:border-box; border-right:1px solid #e4e4e4; border-bottom:1px solid #e4e4e4; background:#f7f8fc;}
+.bbsView table tbody td {text-align:left; padding:10px 8px; box-sizing:border-box; border-right:1px solid #e4e4e4; border-bottom:1px solid #e4e4e4; background:#fff;}
+.bbsView table tbody th em {font-size:16px; font-weight:500; font-style:normal; color:#de1819;}
+.bbsView table tbody td:last-child {border-right:none;}
+.bbsView table tbody td label {display:inline-block; margin-right:5px;}
+.bbsView table tbody td .tbv_line_form {display:inline-block; margin-left:10px;}
+.bbsView table .hide-area {display:none;}
+
+.bbsView table tbody td ul.select_divd {overflow:hidden;}
+.bbsView table tbody td ul.select_divd > li:nth-child(odd) {float:left; width:49.5%; margin-right:1%;}
+.bbsView table tbody td ul.select_divd > li:nth-child(even) {float:right; width:49.5%;}
+
+
+/* 리스트형-내용많을경우 */
+.bbsListLot {overflow:hidden;}
+.bbsListLot table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#878ea1 1px solid; background:#f7f8fc;}
+.bbsListLot table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsListLot table thead th:first-child {background:none;}
+.bbsListLot table tbody td {min-height:10px; padding:8px 5px; text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.bbsListLot table tbody td.taL {text-align: left; } 
+.bbsListLot table tbody th {min-height:10px; padding:5px 10px; text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.bbsListLot table tbody td > strong.tb_hide {display:none;}
+.bbsListLot table tbody th > strong.tb_hide {display:none;}
+.bbsListLot table tbody td > strong.tHide {display:none;}
+.bbsListLot table tbody th > strong.tHide {display:none;}
+
+.tbll table thead th br {display:none;}
+
+/* 리스트형-공지사항/커뮤니티 테이블 */
+.bbsList {overflow:hidden;}
+.bbsList table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.bbsList table thead th {padding:18px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsList table thead th:first-child {background:none;}
+.bbsList table tbody td {min-height:10px; padding:12px 10px; text-align:center; border-bottom:#e2e2e2 1px solid; background:#fff;} 
+.bbsList table tbody th {min-height:10px; padding:12px 10px; text-align:left; border-bottom:#e2e2e2 1px solid; background:#fff;}
+
+/* 리스트형-폼작성리스트(이력서/자기소개서) */
+.bbsListInput {overflow:hidden;}
+.bbsListInput table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.bbsListInput table thead th {padding:18px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsListInput table thead th:first-child {background:none;}
+.bbsListInput table tbody td {min-height:10px; padding:12px 5px; text-align:center; border-bottom:#e2e2e2 1px solid; background:#fff;} 
+.bbsListInput table tbody th {min-height:10px; padding:12px 5px; text-align:left; border-bottom:#e2e2e2 1px solid; background:#fff;}
+.bbsListInput table tbody a {color:#0f21a6;}
+.bbsListInput table tbody strong.tb_hide {display:none;}
+.bbsListInput table tbody span.bbs_span {display:block;}
+
+/* 리스트형-폼작성리스트[박스형] */
+.bbsListInputBox {overflow:hidden;}
+.bbsListInputBox table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; background:#f7f8fc;}
+.bbsListInputBox table thead th {padding:18px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; border-right:1px solid #e4e4e4;}
+.bbsListInputBox table thead th:first-child {border-left:1px solid #e4e4e4;}
+.bbsListInputBox table tbody td {min-height:10px; padding:12px 5px; text-align:center; border-bottom:#e2e2e2 1px solid; border-right:1px solid #e4e4e4; background:#fff;} 
+.bbsListInputBox table tbody th {min-height:10px; padding:12px 5px; text-align:left; border-bottom:#e2e2e2 1px solid; border-right:1px solid #e4e4e4; background:#fff;}
+.bbsListInputBox table tbody td:first-child {border-left:1px solid #e4e4e4;}
+.bbsListInputBox table tbody a {color:#0f21a6;}
+.bbsListInputBox table tbody strong.tb_hide {display:none;}
+.bbsListInputBox table tbody span.bbs_span {display:block;}
+
+/* 리스트형-실전취업리스트 */
+.bbsJobList {overflow:hidden;}
+.bbsJobList table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#878ea1 1px solid; background:#f7f8fc;}
+.bbsJobList table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsJobList table thead th:first-child {background:none;}
+.bbsJobList table tbody td {min-height:10px; padding:8px 5px; text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.bbsJobList table tbody td.taL {text-align: left;} 
+.bbsJobList table tbody th {min-height:10px; padding:5px 10px; text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.bbsJobList table tbody strong.tb_hide {display:none;}
+
+/* 리스트형-이력서/자소서 작성 */
+.bbsResumeList {overflow:hidden;}
+.bbsResumeList table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#878ea1 1px solid; background:#f7f8fc;}
+.bbsResumeList table thead th {padding:15px 8px; font-weight:500; color:#333; text-align:center; border-bottom:1px solid #e4e4e4; background:url('../images/btnIcn/bg_bbsLine.gif') left center no-repeat;}
+.bbsResumeList table thead th:first-child {background:none;}
+.bbsResumeList table tbody td {min-height:10px; padding:8px 5px; text-align:center; border-bottom:#e4e4e4 1px solid; background:#fff;} 
+.bbsResumeList table tbody th {min-height:10px; padding:5px 10px; text-align:left; border-bottom:#e4e4e4 1px solid; background:#fff;}
+.bbsResumeList table tbody strong.tb_hide {display:none;}
+
+/* 리스트형-박스형 */
+.bbsListBox {overflow:hidden;}
+.bbsListBox table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#231f20 1px solid; border-right:#e4e4e4 1px solid; background:#f7f8fc;}
+.bbsListBox table thead th {padding:12px 8px; font-weight:500; color:#333; letter-spacing:-1px; text-align:center; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid;} 
+.bbsListBox table tbody td {min-height:20px; padding:8px; text-align:center; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;} 
+.bbsListBox table tbody th {min-height:20px; padding:8px; text-align:left; border-bottom:#e4e4e4 1px solid; border-left:#e4e4e4 1px solid; background:#fff;}
+.bbsListBox table tbody td.sum {font-size:15px; text-align:right; color:#fff; border-left:1px solid rgba(255,255,255,0.2); background:#3b4354;}
+
+/* 박스형-내용많을경우-스크롤(글자작게) */
+.bbsScrollSm {overflow-x:auto;}
+.bbsScrollSm table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#878ea1 1px solid; border-left:#e4e4e4 1px solid;}
+.bbsScrollSm table thead th {font-size:13px; padding:10px 0; font-weight:500; color:#333; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.bbsScrollSm table tbody td {font-size:13px; padding:8px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.bbsScrollSm table tbody th {font-size:13px; padding:8px; text-align:left; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.bbsScrollSm table tbody td:last-child, .bbsScrollSm table tbody th:last-child {border-right:#e4e4e4 1px solid;}
+.bbsScrollSm table tbody td label {display:inline-block; margin-right:5px;}
+
+/* 박스형-스크롤 */
+.bbsScroll {overflow-x:auto;}
+.bbsScroll table {width:100%; table-layout:fixed; border-spacing:0; border-collapse:collapse; border-top:#878ea1 1px solid; border-left:#e4e4e4 1px solid;}
+.bbsScroll table thead th {font-size:14px; padding:10px 5px; font-weight:500; color:#333; letter-spacing:-1px; text-align:center; background:#f7f8fc; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.bbsScroll table tbody td {font-size:14px; padding:8px 5px; text-align:center; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;} 
+.bbsScroll table tbody th {font-size:14px; padding:8px 5px; text-align:left; border-right:#e4e4e4 1px solid; border-bottom:#e4e4e4 1px solid;}
+.bbsScroll table tbody td:last-child, .bbsScroll table tbody th:last-child {border-right:#e4e4e4 1px solid;}
+
+
+@media all and (max-width:1199px) {
+
+}
+
+@media all and (max-width:989px) {
+
+}
+
+@media all and (max-width:767px) {
+	/* 리스트형-내용많을경우 */
+ 	.bbsListLot table {table-layout:auto; background:none; border-bottom:1px solid #e4e4e4;}
+	.bbsListLot table colgroup {display:none;}
+	.bbsListLot table thead {display:none;}
+	.bbsListLot table tbody tr {position:relative; display:inline-block; width:100%; padding:5px 0; box-sizing:border-box; border-bottom:1px solid #e4e4e4;}
+	.bbsListLot table tbody tr:last-child {border-bottom:none;}
+	.bbsListLot table tbody td {display:block; text-align:left; border:none; padding:4px 5px; min-height:20px;}
+	.bbsListLot table tbody th {display:block; text-align:left; border:none; padding:4px 5px; font-weight:500; min-height:20px;}
+	.bbsListLot table tbody td.num {display:none;}
+	.bbsListLot table tbody td.hits {display:none;}
+	.bbsListLot table tbody td.no-list {text-align:center; padding:8px 5px;}
+	.bbsListLot table tbody td > strong.tb_hide {float:left; position:relative; display:inline-block; font-weight:500; color:#333; padding-right:10px; margin-right:8px;}
+	.bbsListLot table tbody td > strong.tb_hide:after {content:""; display:inline-block; position:absolute; right:0; top:5px; width:1px; height:12px; border-right:1px dashed #999;}
+	.bbsListLot table tbody th > strong.tb_hide {float:left; position:relative; display:inline-block; font-weight:500; color:#333; padding-right:10px; margin-right:8px;}
+	.bbsListLot table tbody th > strong.tb_hide:after {content:""; display:inline-block; position:absolute; right:0; top:5px; width:1px; height:12px; border-right:1px dashed #999;}
+	.bbsListLot table tbody td br.br_hide {display:none;}
+	
+	/* 리스트형-공지사항/커뮤니티 테이블 */
+	.bbsList table {table-layout:auto; border-top:#231f20 1px solid; border-bottom:1px solid #ccc; background:none;}
+	.bbsList table col[data-table="num"] {width:70px;}
+	.bbsList table col[data-table="title"] {}
+	.bbsList table col[data-table="writer"] {width:90px;}
+	.bbsList table col[data-table="wDate"] {width:100px;}
+	.bbsList table col[data-table="hits"] {width:70px;}
+	.bbsList table col[data-table="dwl"] {width:70px;}
+	.bbsList table thead {display:none;}
+	.bbsList table tbody tr {display:block; position:relative; border-top:1px solid #e2e2e2; box-sizing:border-box; padding:0 5px;}
+	.bbsList table tbody tr:first-child {margin-top:0; border-top:none;}
+	.bbsList table tbody th {min-height:10px; text-align:left; padding:12px 5px; border-bottom:1px dashed #ddd;}
+	.bbsList table tbody td {display:block; min-height:10px; padding:12px 5px; text-align:center; border-bottom:none; background:#fff;}
+	.bbsList table tbody td[data-table="num"] {display:none;}
+	.bbsList table tbody th[data-table="title"], td[data-table="title"] {display:block; text-align:left; white-space:inherit;}
+	.bbsList table tbody th[data-table="title"] a, td[data-table="title"] a {color:#0969b3;}
+	.bbsList table tbody th[data-table="title"] a:hover, td[data-table="title"] a:hover {text-decoration:underline;}
+	.bbsList table tbody td[data-table="writer"] {padding-right:110px; text-align:left;}
+	.bbsList table tbody td[data-table="wDate"] {position:absolute; right:0; bottom:0; width:70px; letter-spacing:-0.5px; color:#959dad;}
+	.bbsList table tbody td[data-table="hits"], td[data-table="number"] {display:none;}
+	.bbsList table tbody td.no-list {padding:15px 5px;}
+	
+	/* 리스트형-폼작성리스트(이력서/자기소개서) */
+	.bbsListInput table {table-layout:auto;}
+	.bbsListInput table colgroup {display:none;}
+	.bbsListInput table thead {display:none;}
+	.bbsListInput table tbody tr {position:relative; display:inline-block; width:100%;}
+	.bbsListInput table tbody tr:nth-child(odd) {background:#fff;}
+	.bbsListInput table tbody tr:nth-child(even) {background:#f9fbff;}
+	.bbsListInput table tbody th {display:block; text-align:left; box-sizing:border-box; border-bottom:1px solid #e4e4e4; padding:5px; font-weight:500; background:none; overflow:hidden;}
+	.bbsListInput table tbody td {display:block; text-align:left; box-sizing:border-box; border-bottom:1px solid #e4e4e4; padding:5px; background:none; overflow:hidden;}
+	.bbsListInput table tbody td.num {display:none;}
+	.bbsListInput table tbody td.add-delete {padding:10px 5px; box-sizing:border-box; text-align:center; background:#fff;}
+	.bbsListInput table tbody td.noList {width:100%; box-sizing:border-box; padding:15px 5px; text-align:center; font-size:14px; line-height:14px; background:#fff;}
+	.bbsListInput table tbody input[type="text"] {width:100% !important;}
+	.bbsListInput table tbody select {width:100% !important;}
+	.bbsListInput table tbody input.input_date[type="text"] {width:calc(100% - 25px) !important; width:-webkit-calc(100% - 25px) !important;}
+	.bbsListInput table tbody select.select_date {width:calc(100% - 25px) !important; width:-webkit-calc(100% - 25px) !important; margin-bottom:5px;}
+	.bbsListInput table tbody select.select_date:last-child {margin-bottom:0;}
+	.bbsListInput table tbody span.date_span {display:block;}
+	.bbsListInput table tbody span.bbs_span {display:inline-block;}
+	.bbsListInput table tbody strong.tb_hide {float:left; display:table-cell; vertical-align:middle; width:30%; font-size:13px; line-height:18px; font-weight:500; color:#333; text-align:center; box-sizing:border-box; padding:12px 5px;}
+	.bbsListInput table tbody strong.total {clear:both !important; width:100% !important; border-bottom:1px solid #e4e4e4;}
+	.bbsListInput table tbody div.form {float:right; display:table-cell; vertical-align:middle; width:70%; font-size:13px; line-height:18px; box-sizing:border-box; padding:12px 8px;}
+	.bbsListInput table tbody div.total {clear:both !important; width:100% !important;}
+	
+	/* 리스트형-폼작성리스트-박스형 */
+	.bbsListInputBox table {table-layout:auto; background:#fff;}
+	.bbsListInputBox table colgroup {display:none;}
+	.bbsListInputBox table thead {display:none;}
+	.bbsListInputBox table tbody tr {position:relative; display:inline-block; width:100%;}
+	.bbsListInputBox table tbody th {display:block; text-align:left; box-sizing:border-box; border-bottom:1px solid #e4e4e4; border-left:1px solid #e4e4e4; padding:15px; font-weight:500; overflow:hidden;}
+	.bbsListInputBox table tbody td {display:block; text-align:left; box-sizing:border-box; border-bottom:1px solid #e4e4e4; border-left:1px solid #e4e4e4; padding:5px; overflow:hidden;}
+	.bbsListInputBox table tbody td.num {display:none;}
+	.bbsListInputBox table tbody td.add-delete {padding:10px 5px; box-sizing:border-box; text-align:center; background:#fff;}
+	.bbsListInputBox table tbody td.noList {width:100%; box-sizing:border-box; padding:15px 5px; text-align:center; font-size:14px; line-height:14px; background:#fff;}
+	.bbsListInputBox table tbody input[type="text"] {width:100% !important;}
+	.bbsListInputBox table tbody select {width:100% !important;}
+	.bbsListInputBox table tbody strong.tb_hide {float:left; display:table-cell; vertical-align:middle; width:30%; font-size:13px; line-height:18px; font-weight:500; color:#333; text-align:center; box-sizing:border-box; padding:12px 5px;}
+	.bbsListInputBox table tbody strong.total {clear:both !important; width:100% !important; border-bottom:1px solid #e4e4e4;}
+	.bbsListInputBox table tbody div.form {float:right; display:table-cell; vertical-align:middle; width:70%; font-size:13px; line-height:18px; box-sizing:border-box; padding:12px 8px;}
+	.bbsListInputBox table tbody div.total {clear:both !important; width:100% !important;}
+		
+	/* 리스트형-실전취업리스트 */
+	.bbsJobList table {table-layout:auto; background:#fff;}
+	.bbsJobList table colgroup, .bbsJobList table thead {display:none;}
+	.bbsJobList table tbody tr {position:relative; display:inline-block; width:100%; box-sizing:border-box; padding:15px 0; border-bottom:1px solid #ddd;}
+	.bbsJobList table tbody td {position:relative; display:inline-block; text-align:left; border:none; box-sizing:border-box; padding:4px 6px; min-height:28px;}
+	.bbsJobList table tbody td:after {content:""; display:block; position:absolute; right:0; top:10px; width:1px; height:10px; background:#727272;}
+	.bbsJobList table tbody td:last-child:after {display:none;}
+	.bbsJobList table tbody th {display:block; text-align:left; border:none; padding:4px 8px; font-weight:500; min-height:20px;}
+	.bbsJobList table tbody .jobtit {display:block; font-size:18px; font-weight:500; color:#454f63; word-break:keep-all; margin-bottom:5px;}
+	.bbsJobList table tbody .jobbtn {display:block; width:100%; margin-top:5px;}
+	.bbsJobList table tbody .jobbtn a {display:block !important; width:100% !important; height:35px !important; padding:10px 5px !important;}
+	.bbsJobList table tbody strong.tb_hide {display:inline-block; font-weight:500; color:#666; margin-right:5px;}
+	.bbsJobList table tbody .no-list {display:block; text-align:center;}
+	
+	/* 리스트형-실전취업리스트 */
+	.bbsResumeList table {table-layout:auto; background:#fff;}
+	.bbsResumeList table colgroup, .bbsResumeList table thead {display:none;}
+	.bbsResumeList table tbody tr {position:relative; display:inline-block; width:100%; box-sizing:border-box; padding:15px 0; border-bottom:1px solid #ddd;}
+	.bbsResumeList table tbody td {position:relative; display:inline-block; text-align:left; border:none; box-sizing:border-box; padding:4px 6px; min-height:28px;}
+	.bbsResumeList table tbody td:after {content:""; display:block; position:absolute; right:0; top:10px; width:1px; height:10px; background:#727272;}
+	.bbsResumeList table tbody td:last-child:after {display:none;}
+	.bbsResumeList table tbody th {display:block; text-align:left; border:none; padding:4px 8px; font-weight:500; min-height:20px;}
+	.bbsResumeList table tbody .rsTit {display:block; margin-bottom:5px;}
+	.bbsResumeList table tbody .rsTit a {display:block; font-size:18px; font-weight:500; color:#454f63; text-overflow:ellipsis; white-space:nowrap; overflow:hidden;}
+	.bbsResumeList table tbody .rsTit a:hover {color:#3375ca;}
+	.bbsResumeList table tbody .rsTit:after {display:none;}
+	.bbsResumeList table tbody strong.tb_hide {display:inline-block; font-weight:500; color:#666; margin-right:5px;}
+	.bbsResumeList table tbody .no-list {display:block; text-align:center;}
+	
+	/* 리스트형-박스형 */
+	.bbsListBox table {table-layout:auto;}
+	.bbsListBox table thead th {padding:10px 5px; font-size:13px;} 
+	.bbsListBox table tbody td {padding:8px 5px; font-size:13px;} 
+	.bbsListBox table tbody th {padding:8px 5px; font-size:13px;}
+	
+	/* 테이블 상세보기 */
+	.bbsView {width:100%; overflow:hidden;}
+	.bbsView > table {position:relative; display:block; table-layout:auto; empty-cells:show; border-collapse:separate; border-bottom:1px solid #ddd;}
+	.bbsView > table colgroup {display:none;}
+	.bbsView > table > thead {display:block;}
+	.bbsView > table > thead > tr {display:block; width:100%; overflow:hidden;}
+	.bbsView > table > thead > tr > th {background:#f7f8fc;}
+	.bbsView > table > thead > tr > th:nth-child(1) {display:block; width:30%; float:left; box-sizing:border-box; text-align:center; color:#333; font-weight:500; border-right:1px solid #e4e4e4;}
+	.bbsView > table > thead > tr > th:nth-child(2) {display:block; width:70%; float:right; box-sizing:border-box; text-align:center; color:#333; font-weight:500;}
+	.bbsView > table > tbody {display:block;}
+	.bbsView > table > tbody > tr {display:block; width:100%; overflow:hidden;}
+	.bbsView > table > tbody > tr > th {display:block; vertical-align:middle; width:30%; float:left; clear:left; font-size:13px; line-height:18px; padding:12px 5px; color:#333; border-right:none; border-bottom:none; border-top:1px solid #e4e4e4; background:none;}
+	.bbsView > table > tbody > tr > td {display:block; vertical-align:middle; width:70%; min-height:42px; float:left; text-align:left; font-size:13px; line-height:18px; padding:12px 8px; border-right:none; border-bottom:none; border-top:1px solid #e4e4e4; background:none;}
+	.bbsView > table > tbody > tr > th em {font-size:16px; font-weight:500; font-style:normal; color:#de1819;}
+	.bbsView > table > tbody > tr > td > span {display:inline-block; padding-top:5px;}
+	.bbsView > table > tbody > tr > th.total {width:100%;}
+	.bbsView > table > tbody > tr > td.total {width:100%; background:#fff;}
+	.bbsView > table > tbody > tr > th.bgGray {background:rgba(247,248,252,0.7);}
+	.bbsView > table > tbody > tr > td.bgGray {background:rgba(247,248,252,0.7);}
+	.bbsView table .hide-area {display:block;}
+	
+	.bbsView table tbody td .tbv_line_form {display:block; margin:5px 0 0 0;}
+	.bbsView table tbody td .tbv_line_form input[type="text"], .bbsView table tbody td .tbv_line_form select {width:100% !important;}
+		
+	.bbsView table tbody td ul.select_divd {overflow:hidden;}
+	.bbsView table tbody td ul.select_divd > li:nth-child(odd) {float:none; width:100%; margin:0 0 5px 0;}
+	.bbsView table tbody td ul.select_divd > li:nth-child(even) {float:none; width:100%;}
+	
+	/* 박스형-스크롤 */
+	.bbsScroll table {width:100%; min-width:400px;}
+	.bbsScroll table thead th {font-size:13px;}
+	.bbsScroll table tbody td {font-size:13px;} 
+	.bbsScroll table tbody th {font-size:13px;}
+}
+
+@media all and (max-width:479px) {
+}
+

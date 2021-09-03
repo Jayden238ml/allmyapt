@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="System">
+
+	<select id="getAptuser_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM COM_USER_INFO A LEFT OUTER JOIN APT_INFO_MSTR B ON A.APT_CODE = B.APT_CODE
+		WHERE 1 = 1
+		AND A.APT_CODE != ''
+		<if test="SCH_WORD != null and SCH_WORD != ''">
+			<choose>
+				<when test="SCH_WORD == 'T'.toString()">
+					AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<when test="SCH_WORD == 'C'.toString()">
+					AND B.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+				</when>
+				<otherwise>
+					AND (
+							TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							OR
+							B.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+						)
+				</otherwise>
+			</choose>
+		</if>
+	</select> 
+	
+	<select id="getAptuser_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT 
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.USER_ID
+						, A.USER_NM
+						, A.USER_NICK
+						, A.APT_CODE
+						, A.USER_TYPE
+						, A.USER_PWD
+						, A.USER_EMAIL
+						, A.USER_HP
+						, A.RET_YN
+						, CASE WHEN A.RET_YN = 'Y' THEN '탈퇴' ELSE '정상' END AS RET_YN_NM
+						, CASE WHEN A.USER_TYPE = 'AG' THEN '일반' WHEN A.USER_TYPE = 'NG' THEN '네이버' WHEN A.USER_TYPE = 'TG' THEN '프리미엄' END AS USER_TYPE_NM
+						, A.RET_DATE
+						, DATE_FORMAT(A.REGDATE, '%Y-%m-%d')AS REGDATE 
+						, DATE_FORMAT(A.UPDDATE, '%Y-%m-%d')AS UPDDATE 
+						, B.APT_NM
+					FROM COM_USER_INFO A LEFT OUTER JOIN APT_INFO_MSTR B ON A.APT_CODE = B.APT_CODE
+					WHERE 1 = 1
+					AND A.APT_CODE != ''
+					<if test="SCH_WORD != null and SCH_WORD != ''">
+						<choose>
+							<when test="SCH_WORD == 'T'.toString()">
+								AND TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<when test="SCH_WORD == 'C'.toString()">
+								AND B.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+							</when>
+							<otherwise>
+								AND (
+										TITLE LIKE CONCAT('%', #{SCH_WORD},'%')
+										OR
+										B.APT_NM LIKE CONCAT('%', #{SCH_WORD},'%')
+									)
+							</otherwise>
+						</choose>
+					</if>
+					ORDER BY DATE_FORMAT(A.REGDATE, '%Y-%m-%d %H:%i:%s') DESC
+<!-- 					LIMIT 9999999 -->
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE} 
+		ORDER BY REGDATE DESC
+	</select>
+	
+	
+	<select id="getAptCodeDup_Chk" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS DUP_YN
+		FROM COM_USER_INFO
+		WHERE APT_CODE = #{NEW_CODE}
+	</select>
+	
+	<insert id="setAptInfoMstr_Insert">
+		INSERT INTO APT_INFO_MSTR(
+			  APT_CODE
+			, APT_NM
+			, COMPANY_NM
+			, APT_NUM
+			, AREA_NM
+			, JOHAP_YN
+			, DANZI_YN
+			, ETC
+			, REGDATE
+			, UPDDATE
+			, SEND_TEL
+		)VALUES(
+			  #{APT_CODE}
+			, #{APT_NM}
+			, #{COMPANY_NM}
+			, #{APT_NUM}
+			, #{AREA_NM}
+			, #{JOHAP_YN}
+			, #{DANZI_YN}
+			, #{ETC}
+			, NOW()
+			, NOW()
+			, #{SEND_TEL}
+		)
+	</insert>
+	
+	<update id="setAptInfoMstr_Update">
+		UPDATE APT_INFO_MSTR SET
+			  APT_NM = #{APT_NM}
+			, COMPANY_NM = #{COMPANY_NM}
+			, APT_NUM = #{APT_NUM}
+			, AREA_NM = #{AREA_NM}
+			, JOHAP_YN = #{JOHAP_YN}
+			, DANZI_YN = #{DANZI_YN}
+			, ETC = #{ETC}
+			, UPDDATE = NOW()
+			, SEND_TEL = #{SEND_TEL}
+		WHERE APT_CODE = #{APT_CODE}
+	</update>
+	
+	<update id="setUserInfo_Update">
+		UPDATE COM_USER_INFO SET
+			  USER_NM = #{USER_NM}
+			, USER_NICK = #{USER_NICK}
+			, USER_TYPE = #{USER_TYPE}
+			, UPDDATE = NOW()
+		WHERE USER_ID = #{USER_ID}
+	</update>
+	
+	<insert id="setUserInfo_Insert">
+		INSERT INTO COM_USER_INFO(
+ 			  USER_ID
+			, USER_NM
+			, USER_NICK
+			, APT_CODE
+			, USER_TYPE
+			, USER_PWD
+			, REGDATE
+			, UPDDATE
+ 		)VALUES(
+ 			  #{USER_ID}
+			, #{USER_NM}
+			, #{USER_NICK}
+			, #{APT_CODE}
+			, #{USER_TYPE}
+			, MD5(#{USER_PWD})
+			, NOW()
+			, NOW()
+ 		)
+	</insert>
+	
+	
+	<insert id="setAuthUser_Insert">
+		INSERT INTO SY_AUTH_USER(
+			  AUTH_CODE
+			, AUTH_USER
+		)VALUES(
+			  'APT'
+			, #{USER_ID}
+		)
+	</insert>
+	
+	
+	<select id="getUserInfoDup_Chk" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS DUP_YN
+		FROM COM_USER_INFO
+		WHERE USER_ID = #{USER_ID}
+	</select>
+	
+	
+	<select id="getUserInfo_Detail" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  A.USER_ID
+			, A.USER_NM
+			, A.USER_NICK
+			, A.APT_CODE
+			, A.USER_TYPE
+			, A.USER_PWD
+			, A.USER_EMAIL
+			, A.USER_HP
+			, A.RET_YN
+			, CASE WHEN A.RET_YN = 'Y' THEN '탈퇴' ELSE '정상' END AS RET_YN_NM
+			, A.RET_DATE
+			, B.APT_NM
+			, B.COMPANY_NM
+			, B.APT_NUM
+			, B.AREA_NM
+			, B.ETC
+			, B.JOHAP_YN
+			, B.DANZI_YN
+			, B.SEND_TEL
+		FROM COM_USER_INFO A LEFT OUTER JOIN APT_INFO_MSTR B ON A.APT_CODE = B.APT_CODE
+		WHERE 1 = 1
+		AND A.USER_ID = #{USER_ID}
+	</select>
+	
+	
+	<update id="getPwReset_Update">
+		UPDATE COM_USER_INFO SET
+			USER_PWD = MD5(#{USER_ID})
+		WHERE USER_ID = #{USER_ID}
+	</update>
+	
+	<select id="getSmsSend_infoData" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS CNT
+		FROM SMS_SEND_INFO
+		WHERE APT_CODE = #{APT_CODE}
+	</select>
+	
+	
+	<insert id="setSmsSend_info_Insert">
+		INSERT INTO SMS_SEND_INFO(
+			  APT_CODE
+			, NOW_AMT
+			, PLUS_AMT
+			, SEND_CNT
+			, UPDDATE
+		)VALUES(
+			  #{APT_CODE}
+			, #{SEND_AMT}
+			, #{SEND_AMT}
+			, 0
+			, NOW()
+		)
+	</insert>
+	
+	<update id="setSmsSend_info_Update">
+		UPDATE SMS_SEND_INFO SET
+			NOW_AMT = NOW_AMT + #{SEND_AMT}
+			, UPDDATE = NOW()
+		WHERE APT_CODE = #{APT_CODE}
+	</update>
+	
+	
+</mapper>

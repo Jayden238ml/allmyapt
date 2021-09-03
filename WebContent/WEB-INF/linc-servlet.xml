@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:lang="http://www.springframework.org/schema/lang"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/lang http://www.springframework.org/schema/lang/spring-lang.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+<!--
+  - DispatcherServlet application context for the Spring web MVC
+  -->
+
+	<bean id="beanNameViewResolver" class="org.springframework.web.servlet.view.BeanNameViewResolver">
+		<property name="order" value="2" />
+	</bean>
+
+	<bean id="jstlViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="3" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+		<property name="prefix" value="/WEB-INF/jsp/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<bean id="jsonView" class="apt.framework.util.JsonView"></bean>
+	<!-- ========================= DEFINITIONS OF PUBLIC CONTROLLERS ========================= -->
+	
+	<context:component-scan base-package="apt" /> <!-- 어노테이션 스캔 경로 -->
+
+	<!-- <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/> -->
+
+	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+	<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"/>
+
+	<bean id="methodNameResolver" class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName" value="method" />
+		<property name="defaultMethodName" value="pageMove" />
+	</bean>
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="524288000" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+
+	<!-- 엑셀 생성 -->
+	<bean id="excelView" class="apt.framework.common.ExcelView"></bean>
+
+	<!-- 로컬 서버  -->
+	<bean id="uploadDirResource" class="org.springframework.core.io.FileSystemResource">	
+		<constructor-arg value="C:\Eclipse\workspace\linc\static_root"/>
+	</bean>
+
+	<!-- ========================= DEFINITIONS OF PROTECTED CONTROLLERS ========================= -->
+	<bean id="secureHandlerMapping"	class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="urlMap">
+			<map>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Exception">error</prop>
+			</props>
+		</property>
+		<property name="defaultErrorView" value="error"/>
+	</bean>
+
+<!--
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/syController.do"/>
+			<mvc:mapping path="/common/comonController.do"/>
+			<bean class="career.framework.util.XSSInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+-->
+
+</beans>

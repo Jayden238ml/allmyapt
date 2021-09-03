@@ -1,0 +1,510 @@
+serviceKey:
+  WYBFXAHoQviH3zpdQ+Q89+/I7HfCQOkVV6tXdEAKInYKfZ+clbT9b5AafYGOBGc+AbPewNrX+qh6iHFxxP4pYQ==
+  
+codeService:
+  # 학교종류별 코드조회
+  CS_CodeByKind:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByKind?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols :
+      - cdid # 코드아이디
+      - cdnm # 코드값
+
+  # 학교유형별 코드조회
+  CS_CodeByType:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByType?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols :
+      - cdid # 코드아이디
+      - cdnm # 코드값
+
+  # 설립유형별 코드조회
+  CS_CodeByFound:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByFound?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols :
+      - cdid # 코드아이디
+      - cdnm # 코드값
+
+  # 지역별 코드조회
+  CS_CodeByRegion:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByRegion?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols :
+      - cdid # 코드아이디
+      - cdnm # 코드값
+
+  # 주요지표 코드조회  (선행필수)
+  CS_KeyIndicatorCode:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getKeyIndicatorCode?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols: 
+      - cdid # 코드아이디
+      - cdnm # 코드값
+      - rmk  # 해당년도
+      
+  # 대학 코드조회    
+  # 데이타가 실제로 중복되서 응답됨. 중복 제거 필요.
+  CS_UniversityCode:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getUniversityCode?serviceKey={serviceKey}&svyYr={svyYr}&_type=json&numOfRows=100&pageNo={pageNo}
+    params:
+      - svyYr
+    cols:
+      - clgcpDivCd  # 본분교구분코드
+      - clgcpDivNm  # 본분교구분명
+      - estbDivCd  # 설립구분코드
+      - estbDivNm  # 설립구분명
+      - schlDivCd  # 학교구분(종류)코드
+      - schlDivNm  # 학교구분(종류)명
+      - schlFullNm  # 학교명_본분교명
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교명
+      - svyYr  # 공시년도
+      - znCd  # 지역코드
+      - znNm  # 지역명
+
+
+#대학경쟁력알림 서비스
+univCompetitiveNoticeService:
+  #전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공(2종)
+  UCNS_FullTimeFacultyResearchCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFullTimeFacultyResearchCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - schlId    # 학교아이디
+      - schlKrnNm # 학교한글명
+      - indctVal1 # 지표값
+      - indctVal2 # 지표값
+      - indctVal3 # 지표값
+      - indctVal4 # 지표값
+      - indctAvg  # 평균
+      - indctImg  # 랭크(별
+      - svyYr     # 공시년도
+      - indctId   # 지표아이디
+      
+  #  재학생 충원율 조회  재학생 충원 정보 제공
+  UCNS_EnrolledStudentDrafteesRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getEnrolledStudentDrafteesRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schId
+    cols:
+      - schlId    # 학교아이디
+      - schlKrnNm # 학교한글명
+      - indctVal1 # 지표값
+      - indctVal2 # 지표값
+      - indctVal3 # 지표값
+      - indctVal4 # 지표값
+      - indctAvg  # 평균
+      - indctImg  # 랭크
+      - svyYr     # 공시년도
+      - indctId   # 지표아이디
+
+  #전임교원확보율 조회  전임교원확보율 정보 제공
+  UCNS_FullTimeFacultyEnsureRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFullTimeFacultyEnsureRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - schlId    # 학교아이디
+      - schlKrnNm # 학교한글명
+      - indctVal1 # 지표값
+      - indctVal2 # 지표값
+      - indctVal3 # 지표값
+      - indctVal4 # 지표값
+      - indctAvg  # 평균
+      - indctImg  # 랭크(별
+      - svyYr     # 공시년도
+      - indctId   # 지표아이디
+
+  #졸업생 취업율 조회  졸업생 취업율 정보 제공 (최근2년)
+  UCNS_GraduateEmploymentRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getGraduateEmploymentRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - schlId    # 학교아이디
+      - schlKrnNm # 학교한글명
+      - indctVal1 # 지표값
+      - indctVal2 # 지표값
+      - indctVal3 # 지표값
+      - indctVal4 # 지표값
+      - indctAvg  # 평균
+      - indctImg  # 랭크(별
+      - svyYr     # 공시년도
+      - indctId   # 지표아이디
+    
+  #신입생 충원율 조회  신입생 충원율 정보 제공
+  UCNS_FreshmanDrafteesRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFreshmanDrafteesRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - schlId    # 학교아이디
+      - schlKrnNm # 학교한글명
+      - indctVal1 # 지표값
+      - indctVal2 # 지표값
+      - indctVal3 # 지표값
+      - indctVal4 # 지표값
+      - indctAvg  # 평균
+      - indctImg  # 랭크(별)
+      - svyYr     # 공시년도
+      - indctId   # 지표아이디
+
+  #조사년도 조회 조회가능한 조사년도 정보 제공 (리스트 없음????)
+#  UCNS_SvyYear:
+#    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getSvyYear?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+
+  #대학 검색목록 대학경쟁력알림 조회를 위한 대학 검색목록 제공 (중복데이타 DGK_GETUNIVERSITYCODE)
+#  UCNS_UniversitySearchList:
+#    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getUniversitySearchList?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr} 
+#    params:
+#      - svyYr 
+
+
+# 대학공시정보 대학비교통계 서비스
+universityComparisonStatisticsService:
+# 공시년도 조회 조회가능한 공시년도 정보 제공 (2014,2015,2016) - (선행필수)
+  UCSS_PubYear:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getPubYear?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    cols:
+      - yearVal
+# 대학 검색목록 대학비교통계 조회를 위한 대학 검색목록 제공 (getUniversityCode 와 동일)
+  UCSS_UniversitySearchList:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getUniversitySearchList?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}
+    params:
+      - svyYr
+    cols:
+      - svyYr  # 공시년도
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교명
+      - clgcpDivCd  # 본분교구분코드
+      - clgcpDivNm  # 본분교구분명
+      - schlDivCd  # 학교구분(종류)코드
+      - schlDivNm  # 학교구분(종류)명
+      - schlFullNm  # 학교명_본분교명
+      - znCd  # 지역코드
+      - znNm  # 지역명
+      - estbDivCd  # 설립구분코드
+      - estbDivNm  # 설립구분명
+
+# 강의담당비율 조회 전임교원 강의담당비율 정보 제공
+  UCSS_LectureChargeRatio:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getLectureChargeRatio?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+
+# 신입생 충원 현황 조회  신입생 충원 현황 정보 제공
+  UCSS_FreshmanEnsureCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFreshmanEnsureCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 재적학생 현황 조회  재적학생 현황 정보 제공
+  UCSS_EnrolledStudentCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getEnrolledStudentCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 전임교원 확보 현황 조회 전임교원 확보 현황 정보 제공
+  UCSS_FullTimeFacultyEnsureCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyEnsureCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}&indctId={indctId}
+    params:
+      - svyYr
+      - schlId
+      - indctId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공
+  UCSS_FullTimeFacultyResearchCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyResearchCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}&indctId={indctId}
+    params:
+      - svyYr
+      - schlId
+      - indctId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 졸업생의 진학, 취업 현황 조회 졸업생의 진학, 취업 현황 정보 제공
+  UCSS_GraduateEnterFindJobCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getGraduateEnterFindJobCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}&indctId={indctId}
+    params:
+      - svyYr
+      - schlId
+      - indctId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 학생 1인당 교육비 환원 현황 조회 학생 1인당 교육비 환원 현황 정보 제공
+  UCSS_EducationalExpensesReductionCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getEducationalExpensesReductionCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}&indctId={indctId}
+    params:
+      - svyYr
+      - schlId
+      - indctId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+
+# 교지, 교사 확보율 조회 교지,교사 확보율 정보 제공
+  UCSS_SchoolGroundsAndBdsEnsureRate: 
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getSchoolGroundsAndBdsEnsureRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}&indctId={indctId}
+    params:
+      - svyYr
+      - schlId
+      - indctId
+    cols:
+      - indctId  # 지표아이디
+      - indctVal1  # 지표값
+      - indctYr  # 지표아이디
+      - schlDivNm  # 학교종류
+      - schlEstbNm  # 설립구분
+      - schlId  # 학교아이디
+      - schlKrnNm  # 학교한글명
+      - svyYr  # 공시년도
+      
+# 대학공시정보 지역별 통계 서비스
+regionalStatisticsService:
+#전임교원 연구 실적 현황 조회 전임교원 연구 실적 현황 정보 제공
+  RSS_FullTimeFacultyResearchCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getFullTimeFacultyResearchCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}
+    params:
+      - schlDivCd
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#강의담당비율 조회  강의담당비율 정보 제공
+  RSS_LectureChargeRatio:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getLectureChargeRatio?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}&indctId={indctId}
+    params:
+      - schlDivCd
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#신입생 충원 현황 조회 신입생 충원 현황 정보 제공
+  RSS_FreshmanEnsureCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getFreshmanEnsureCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}
+    params:
+      - schlDivCd
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#재적학생 현황 조회 재적학생 현황 정보 제공
+  RSS_EnrolledStudentCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getEnrolledStudentCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}
+    params:
+      - schlDivCd
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#전임교원 확보 현황 조회  전임교원 확보 현황 정보 제공
+  RSS_RullTimeFacultyEnsureCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getullTimeFacultyEnsureCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}&indctId={indctId}
+    params:
+      - schlDivCd
+      - indctId
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#졸업생의 진학, 취업 현황 조회  졸업생의 진학,취업 현황 정보 제공
+  RSS_GraduateEnterFindJobCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getGraduateEnterFindJobCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}&indctId={indctId}
+    params:
+      - schlDivCd
+      - indctId
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#학생 1인당 교육비 환원 현황 조회  학생 1인당 교육비 환원 현황 정보 제공
+  RSS_EducationalExpensesReductionCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getEducationalExpensesReductionCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}&indctId={indctId}
+    params:
+      - schlDivCd
+      - indctId
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분
+
+#교지, 교사 확보율 조회  교지·교사 확보율 정보 제공
+  RSS_SchoolGroundsAndBdsEnsureRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/RegionalStatisticsService/getSchoolGroundsAndBdsEnsureRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&schlDivCd={schlDivCd}&indctId={indctId}
+    params:
+      - schlDivCd
+      - indctId
+    cols:
+      - fieldType1  # 필드명1
+      - fieldType2  # 필드명2
+      - fieldType3  # 필드명3
+      - fieldType4  # 필드명4
+      - fieldType5  # 필드명5
+      - fieldType6  # 필드명6
+      - fieldType7  # 필드명7
+      - fieldVal1  # 필드값1
+      - fieldVal2  # 필드값2
+      - fieldVal3  # 필드값3
+      - fieldVal4  # 필드값4
+      - fieldVal5  # 필드값5
+      - fieldVal6  # 필드값6
+      - fieldVal7  # 필드값7
+      - indctId  # 지표아이디
+      - schlDivCd  # 학교구분

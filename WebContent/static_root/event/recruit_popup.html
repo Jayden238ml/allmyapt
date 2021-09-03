@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<style>
+.hidden{position:absolute;top:0;left:0;visibility:hidden;width:0;height:0;}
+.page {position: relative;}
+/** 메인 팝업 **/
+#pop_print {padding: 0; margin:0;}
+#pop_print .usualpop {margin-bottom: 0; position:relative; z-index: 10;}
+#pop_print .usualpop>div {height: inherit;}
+#pop_print .nomoreinfo {background:#ffffff;position:relative; color:#454545;}
+#pop_print .nomoreinfo>a {position:absolute; color:#fff;}
+#pop_print .nminfo2 {z-index: 1;}
+</style>
+</head>
+<body style="margin:0; padding:0;">
+<div id="pop_print">
+	<div class="page">
+		<div class="usualpop"> <a href="/static_root/event/recruit_list.html" target="_blank"><img src="/static_root/event/images/recruit_pop3.jpg" alt="공지사항" border="0" /></a> </div>
+		<div class="nomoreinfo nminfo2">
+		</div>
+	</div>
+</div>
+</body>	

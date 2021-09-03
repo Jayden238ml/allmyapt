@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>이미지 첨부</title> 
+<script type="text/javascript" src="/static_root/js/jquery-1.7.2.min.js" ></script>
+<script type="text/javascript" src="/static_root/js/jquery.form.js" ></script>
+<script src="../../js/popup.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" href="../../css/popup.css" type="text/css"  charset="utf-8"/>
+<script type="text/javascript">
+// <![CDATA[
+	
+	function done() {
+		var form = $('#attachFrm');
+		var formData = [];
+		formData = new FormData(form[0]);
+		$.ajax({
+			url : "/common/swfUpload.do",
+			data : formData,
+			type : 'POST',
+			enctype : 'multipart/form-data',
+			processData : false,
+			contentType : false,
+			dataType : 'json',
+			async : false,
+			cache : false,
+			success : function(transport) {
+				var obj = transport.jobj
+				var _mockdata = {
+		 			'imageurl': "http://allmyapt.com" + obj.imageurl,
+		 			'filename': obj.filename,
+		 			'filesize': obj.filesize,
+		 			'imagealign': 'C',
+		 			'originalurl': "http://allmyapt.com" + obj.originalurl,
+		 			'thumburl':    "http://allmyapt.com" + obj.imageurl
+		 		};
+		 		execAttach(_mockdata);
+		 		closeWindow();
+			}
+		});
+		
+	}
+
+	function initUploader(){
+	    var _opener = PopupUtil.getOpener();
+	    if (!_opener) {
+	        alert('잘못된 경로로 접근하셨습니다.');
+	        return;
+	    }
+	    
+	    var _attacher = getAttacher('image', _opener);
+	    registerAction(_attacher);
+	}
+// ]]>
+</script>
+</head>
+<body onload="initUploader();">
+<div class="wrapper">
+	<div class="header">
+		<h1>사진 첨부</h1>
+	</div>	
+	<div class="body">
+		<dl class="alert">
+		    <dt>사진 확인</dt>
+		    <dd>
+		    	<form name="attachFrm" id="attachFrm" method="post" enctype="multipart/form-data" action="#">
+		    		<input type="file" name="atte1" id="atte1" class="file_input_hidden" />
+		    	</form>
+			</dd>
+		</dl>
+	</div>
+	<div class="footer">
+		<p><a href="#" onclick="closeWindow();" title="닫기" class="close">닫기</a></p>
+		<ul>
+			<li class="submit"><a href="#" onclick="done();" title="등록" class="btnlink" id="saveBtn">등록</a> </li>
+			<li class="cancel"><a href="#" onclick="closeWindow();" title="취소" class="btnlink">취소</a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

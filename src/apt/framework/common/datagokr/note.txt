@@ -1,0 +1,544 @@
+SVN URL : https://112.217.210.212/svn/linc/inje
+SVN ID / PW : KangNamgyu / KangNamgyu
+
+
+www.data.go.kr
+inje3923 / linc4033*
+
+
+컨트롤러는 linc.framework.common.control 패키지에 신규로 생성해서 작업하시면 될듯합니다.
+
+쿼리 xml도 linc.sqlmap 에 신규로 생성해서 하시면 됩니다.
+쿼리 xml 생성후 sql-map-config.xml에 생성한 쿼리파일정보를 추가하시면 됩니다.
+
+
+jdbc.driverClassName3=com.microsoft.sqlserver.jdbc.SQLServerDriver
+jdbc.url3=jdbc:sqlserver://112.217.210.210;DatabaseName=lincInje
+jdbc.username3=linc
+jdbc.password3=linc123$%^
+
+
+
+
+serviceKey:
+  WYBFXAHoQviH3zpdQ+Q89+/I7HfCQOkVV6tXdEAKInYKfZ+clbT9b5AafYGOBGc+AbPewNrX+qh6iHFxxP4pYQ==
+  
+CodeService:
+  # 학교종류별 코드조회
+  getCodeByKind:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByKind?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    desc: 학교종류별 코드조회
+
+  # 학교유형별 코드조회
+  getCodeByType:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByType?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+
+  # 설립유형별 코드조회
+  getCodeByFound:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByFound?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+
+  # 지역별 코드조회
+  getCodeByRegion:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getCodeByRegion?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    
+  # 주요지표 코드조회  
+  getKeyIndicatorCode:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getKeyIndicatorCode?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+    
+  # 대학 코드조회    
+  getUniversityCode:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getUniversityCode?serviceKey={serviceKey}&svyYr={svyYr}&_type=json&numOfRows=100&pageNo={pageNo}
+    params:
+      - svyYr
+
+
+#대학경쟁력알림 서비스
+UnivCompetitiveNoticeService:
+  #  재학생 충원율 조회  재학생 충원 정보 제공
+  getEnrolledStudentDrafteesRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getEnrolledStudentDrafteesRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schId
+
+  #전임교원확보율 조회  전임교원확보율 정보 제공
+  getFullTimeFacultyEnsureRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFullTimeFacultyEnsureRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+
+  #졸업생 취업율 조회  졸업생 취업율 정보 제공 (최근2년)
+  getGraduateEmploymentRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getGraduateEmploymentRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+
+  #전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공(2종)
+  getFullTimeFacultyResearchCrntSt:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFullTimeFacultyResearchCrntSt?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+    
+  #신입생 충원율 조회  신입생 충원율 정보 제공
+  getFreshmanDrafteesRate:
+    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getFreshmanDrafteesRate?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr}&schlId={schlId}
+    params:
+      - svyYr
+      - schlId
+
+  #조사년도 조회 조회가능한 조사년도 정보 제공 (리스트 없음????)
+#  getSvyYear:
+#    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getSvyYear?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}
+
+  #대학 검색목록 대학경쟁력알림 조회를 위한 대학 검색목록 제공 (중복데이타 DGK_GETUNIVERSITYCODE)
+#  getUniversitySearchList:
+#    url: http://openapi.academyinfo.go.kr/openapi/service/rest/UnivCompetitiveNoticeService/getUniversitySearchList?serviceKey={serviceKey}&_type=json&numOfRows=100&pageNo={pageNo}&svyYr={svyYr} 
+#    params:
+#      - svyYr 
+
+
+# 대학공시정보 대학비교통계 서비스
+ 
+  # 교지, 교사 확보율 조회 교지,교사 확보율 정보 제공
+  # 강의담당비율 조회 전임교원 강의담당비율 정보 제공
+  # 신입생 충원 현황 조회  신입생 충원 현황 정보 제공
+  # 재적학생 현황 조회  재적학생 현황 정보 제공
+  # 전임교원 확보 현황 조회 전임교원 확보 현황 정보 제공
+  # 전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공
+  # 졸업생의 진학, 취업 현황 조회 졸업생의 진학, 취업 현황 정보 제공
+  # 학생 1인당 교육비 환원 현황 조회 학생 1인당 교육비 환원 현황 정보 제공
+  # 공시년도 조회 조회가능한 공시년도 정보 제공
+  # 대학 검색목록 대학비교통계 조회를 위한 대학 검색목록 제공
+  
+  
+  
+  # 교지, 교사 확보율 조회 교지,교사 확보율 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getSchoolGroundsAndBdsEnsureRate
+svyYr
+schlId
+indctId
+
+# 강의담당비율 조회 전임교원 강의담당비율 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getLectureChargeRatio
+svyYr
+schlId
+
+# 신입생 충원 현황 조회  신입생 충원 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFreshmanEnsureCrntSt
+svyYr
+schlId
+
+# 재적학생 현황 조회  재적학생 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getEnrolledStudentCrntSt
+svyYr
+schlId
+
+# 전임교원 확보 현황 조회 전임교원 확보 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyEnsureCrntSt
+svyYr
+schlId
+indctId
+
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyEnsureCrntSt?svyYr=2016&schlId=0000149&serviceKey=WYBFXAHoQviH3zpdQ%2BQ89%2B%2FI7HfCQOkVV6tXdEAKInYKfZ%2BclbT9b5AafYGOBGc%2BAbPewNrX%2Bqh6iHFxxP4pYQ%3D%3D&indctId=82
+
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyEnsureCrntSt?svyYr=2014&schlId=0000149&serviceKey=WYBFXAHoQviH3zpdQ%2BQ89%2B%2FI7HfCQOkVV6tXdEAKInYKfZ%2BclbT9b5AafYGOBGc%2BAbPewNrX%2Bqh6iHFxxP4pYQ%3D%3D
+
+
+
+# 전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getFullTimeFacultyResearchCrntSt
+svyYr
+schlId
+indctId
+
+# 졸업생의 진학, 취업 현황 조회 졸업생의 진학, 취업 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getGraduateEnterFindJobCrntSt
+svyYr
+schlId
+indctId
+
+# 학생 1인당 교육비 환원 현황 조회 학생 1인당 교육비 환원 현황 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getEducationalExpensesReductionCrntSt
+svyYr
+schlId
+indctId
+
+
+# 공시년도 조회 조회가능한 공시년도 정보 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getPubYear
+
+
+# 대학 검색목록 대학비교통계 조회를 위한 대학 검색목록 제공
+http://openapi.academyinfo.go.kr/openapi/service/rest/UniversityComparisonStatisticsService/getUniversitySearchList
+svyYr
+
+
+
+
+http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getKeyIndicatorCode?serviceKey=WYBFXAHoQviH3zpdQ%2BQ89%2B%2FI7HfCQOkVV6tXdEAKInYKfZ%2BclbT9b5AafYGOBGc%2BAbPewNrX%2Bqh6iHFxxP4pYQ%3D%3D&_type=json&numOfRows=100&pageNo=1&svyYr=2016
+{serviceKey=WYBFXAHoQviH3zpdQ+Q89+/I7HfCQOkVV6tXdEAKInYKfZ+clbT9b5AafYGOBGc+AbPewNrX+qh6iHFxxP4pYQ==, svyYr=2016, pageNo=1}
+getKeyIndicatorCode
+
+http://openapi.academyinfo.go.kr/openapi/service/rest/CodeService/getKeyIndicatorCode?serviceKey=WYBFXAHoQviH3zpdQ%2BQ89%2B%2FI7HfCQOkVV6tXdEAKInYKfZ%2BclbT9b5AafYGOBGc%2BAbPewNrX%2Bqh6iHFxxP4pYQ%3D%3D&_type=json
+
+
+{"response":{"header":{"resultCode":"00","resultMsg":"NORMAL SERVICE."},"body":{"items":{"item":
+
+[{"cdid":9,"cdnm":"재적학생","rmk":2016}
+,{"cdid":9,"cdnm":"재적학생","rmk":2016}
+,{"cdid":9,"cdnm":"재적학생","rmk":2015}
+,{"cdid":9,"cdnm":"재적학생","rmk":2015}
+,{"cdid":9,"cdnm":"재적학생","rmk":2014}
+,{"cdid":9,"cdnm":"재적학생","rmk":2014}
+,{"cdid":82,"cdnm":"학자금대출 이용학생비율(등록금(학비))","rmk":2016}
+,{"cdid":82,"cdnm":"학자금대출 이용학생비율(등록금(학비))","rmk":2016}
+,{"cdid":82,"cdnm":"학자금대출 이용학생비율(등록금(학비))","rmk":2015}
+,{"cdid":82,"cdnm":"학자금대출 이용학생비율(등록금(학비))","rmk":2015}]},"numOfRows":10,"pageNo":1,"totalCount":278}}}
+
+
+
+
+  
+//	@Async
+//	public Future<String> getApiResponseBySchId(String table, String url, Map<String, String> paraMap, boolean createTable) throws Exception {
+//		
+//		List<String> schlIds = jdbcTemplate.queryForList("SELECT SCHLID FROM DGK_GETUNIVERSITYCODE WHERE VERSION = ?", String.class, newVersion);
+//		
+//		
+//		for(String schlId :schlIds){
+//			paraMap.put("schlId", schlId);
+//			System.out.println(url);
+//			System.out.println(paraMap);
+//			
+//			String results = restTemplate.getForObject(url, String.class, paraMap);
+//			System.out.println(results);
+//			
+//			DataGoKrResponse dgk = objectMapper.readValue(results, DataGoKrResponse.class);
+//			
+//			String tableName = "DGK_" + table.toUpperCase();
+//			System.out.println(tableName);
+//			Set<String> columnNames = dgk.getColumnNames();
+//			System.out.println(columnNames);
+//			if (columnNames == null){
+//				System.out.println("columnNames null");
+//		        continue;
+//			}
+//			
+//			if (createTable){
+//				boolean ifExistTable = checkTableExists(tableName);
+//				if (ifExistTable){
+//					System.out.println(tableName + " IS EXISTS");
+//				}else{
+//					System.out.println(tableName + " IS NOT EXISTS");
+//					createTable(columnNames, tableName);
+//				}
+//			}
+//			
+//
+//			String insertCols = StringUtils.join(columnNames, ",");
+//			insertCols = new StringBuilder(insertCols).append(",VERSION").toString().toUpperCase();
+//			
+//			
+//			StringBuilder stringBuilder = new StringBuilder();
+//			stringBuilder.append("INSERT INTO");
+//			stringBuilder.append(" ");
+//			stringBuilder.append(tableName);
+//			stringBuilder.append(" ");
+//			stringBuilder.append("(");
+//			stringBuilder.append(insertCols);
+//			stringBuilder.append(") VALUES (");
+//			for (int i = 0; i < columnNames.size(); i++) {
+//				stringBuilder.append("?,");
+//			}
+//			stringBuilder.append("?"); // for version
+//			stringBuilder.append(")");
+//			String query = stringBuilder.toString();
+//			System.out.println(query);
+//			
+//			
+//			List<Object[]> batch = new ArrayList<Object[]>();
+//			
+//			ArrayList<Map<String, String>> items = dgk.getItems();
+//			for (Map<String, String> map : items) {
+//				System.out.println(map);
+//				
+//				Object[] values = map.values().toArray();
+//				ArrayList<Object> newObj = new ArrayList<Object>(Arrays.asList(values));
+//				newObj.add(newVersion);
+//				values = newObj.toArray();
+//				batch.add(values);
+//				
+//			}
+//			
+//			int[] batchInsertResult = jdbcTemplate.batchUpdate(query, batch);
+//			System.out.println("batchInsertResult : " + batchInsertResult);
+//			
+//			Thread.sleep(100L);
+//			requestNextPageBySchId(table, url, paraMap, dgk, false);
+//			
+//		}
+//		
+//        return new AsyncResult<>("done");
+//	}
+	
+//	private void requestNextPageBySchId(String table, String url, Map<String, String> paraMap, DataGoKrResponse dgk, boolean createTable)
+//			throws Exception {
+//		String numOfRows = dgk.getBody().getNumOfRows();
+//		String pageNo = dgk.getBody().getPageNo();
+//		String totalCount = dgk.getBody().getTotalCount();
+//		
+//		System.out.println("numOfRows :" + numOfRows);
+//		System.out.println("pageNo : " + pageNo);
+//		System.out.println("totalCount : " + totalCount);
+//		
+////		없는 페이지를 호출하면  numOfRows, pageNo, totalCount 가 없다.
+//		if(Integer.valueOf(numOfRows) * Integer.valueOf(pageNo) < Integer.valueOf(totalCount)){
+//			// page + 1
+//			paraMap.put("pageNo", String.valueOf(Integer.valueOf(pageNo) + 1));
+//			getApiResponseBySchId(table, url, paraMap, false);
+//		}
+//	}
+	
+
+
+** 환경설정파일
+ - api 정보 등록
+ - linc.framework.common.datagokr.DataGoKr.yml
+
+** 테스트
+ - linc.framework.common.datagokr.DataGoKr.DataGoKrTest
+
+** 실행
+class linc.framework.common.datagokr.DataGoKrRunner
+
+/**
+ * data.go.kr 대학공시정보 전체 새버전 등록
+ * @return null
+ * @throws Exception
+ */
+@RequestMapping(value = "/dgk/all.do")
+public ModelAndView runAll(HttpServletRequest request, HttpServletResponse response) throws Exception  {
+	
+    int dgkNewVersion = getNewDgkVersion();
+    newVersion = dgkNewVersion;
+    System.out.println(dgkNewVersion);
+    try {
+    	boolean result = procCodeService();
+    	if (result){
+          getUnivCompetitiveNoticeService();
+          getUniversityComparisonStatisticsService();
+          getRegionalStatisticsService();
+    	}
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+    
+	return null;
+}
+
+
+/**
+ * data.go.kr 대학 공시정보 코드
+ * @return null
+ * @throws Exception
+ */
+@RequestMapping(value = "/dgk/procCodeService.do")
+public ModelAndView runProcCodeService(HttpServletRequest request, HttpServletResponse response) throws Exception  {
+	
+    int dgkNewVersion = getNewDgkVersion();
+    newVersion = dgkNewVersion;
+    System.out.println(dgkNewVersion);
+    try {
+    	procCodeService();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+/**
+ * data.go.kr 대학공시정보 경쟁력알림 
+ * @param v - version (버전 직접 입력시 해당 버전사용)
+ * @return null
+ * @throws Exception
+ */
+@RequestMapping(value = "/dgk/univCompetitiveNoticeService.do")
+public ModelAndView runGetUnivCompetitiveNoticeService(HttpServletRequest request, HttpServletResponse response) throws Exception  {    	
+    
+	String v = request.getParameter("v");
+	if (v != null && !"".equals(v)){
+		try {
+			Integer pVersion = Integer.valueOf(v);
+			newVersion = pVersion;
+		} catch (Exception e) {
+			
+		}
+	}
+	
+
+    try {
+    	getUnivCompetitiveNoticeService();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+    
+	return null;
+}
+
+/** 
+ * data.go.kr 대학공시정보 대학비교통계 서비스  
+ * @param v - version (버전 직접 입력시 해당 버전사용)
+ * @return null
+ * @throws Exception
+ */
+@RequestMapping(value = "/dgk/universityComparisonStatisticsService.do")
+public ModelAndView runGetUniversityComparisonStatisticsService(HttpServletRequest request, HttpServletResponse response) throws Exception  {    	
+    
+	String v = request.getParameter("v");
+	if (v != null && !"".equals(v)){
+		try {
+			Integer pVersion = Integer.valueOf(v);
+			newVersion = pVersion;
+		} catch (Exception e) {
+			
+		}
+	}
+	
+    try {
+    	getUniversityComparisonStatisticsService();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+/** 
+ * data.go.kr 대학공시정보 대학비교통계 서비스  
+ * @param v - version (버전 직접 입력시 해당 버전사용)
+ * @return null
+ * @throws Exception
+ */
+@RequestMapping(value = "/dgk/regionalStatisticsService.do")
+public ModelAndView runGetRegionalStatisticsService(HttpServletRequest request, HttpServletResponse response) throws Exception  {    	
+	String v = request.getParameter("v");
+	if (v != null && !"".equals(v)){
+		try {
+			Integer pVersion = Integer.valueOf(v);
+			newVersion = pVersion;
+		} catch (Exception e) {
+			
+		}
+	}
+	
+    try {
+    	getRegionalStatisticsService();
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return null;
+}
+
+
+################ 테이블 정보 ################
+
+# 코드 서비스
+SELECT * FROM SYSOBJECTS WHERE NAME LIKE 'DGK_CS_%' AND XTYPE='U';
+	# 설립유형별 코드조회
+	DGK_CS_CODEBYFOUND
+
+	# 학교종류별 코드조회
+	DGK_CS_CODEBYKIND
+	
+	# 지역별 코드조회
+	DGK_CS_CODEBYREGION
+	
+	# 학교유형별 코드조회
+	DGK_CS_CODEBYTYPE
+
+	# 주요지표 코드조회  (선행필수)
+	DGK_CS_KEYINDICATORCODE
+	
+	# 대학 코드조회
+	DGK_CS_UNIVERSITYCODE
+
+
+# 대학경쟁력알림 서비스
+SELECT * FROM SYSOBJECTS WHERE NAME LIKE 'DGK_UCNS_%' AND XTYPE='U';
+	# 재학생 충원율 조회  재학생 충원 정보 제공
+	DGK_UCNS_ENROLLEDSTUDENTDRAFTEESRATE
+
+	#신입생 충원율 조회  신입생 충원율 정보 제공
+	DGK_UCNS_FRESHMANDRAFTEESRATE
+
+	#전임교원확보율 조회  전임교원확보율 정보 제공
+	DGK_UCNS_FULLTIMEFACULTYENSURERATE
+
+	# 전임교원 연구 실적 현황 조회  전임교원 연구 실적 현황 정보 제공
+	DGK_UCNS_FULLTIMEFACULTYRESEARCHCRNTST
+	
+	# 졸업생 취업율 조회  졸업생 취업율 정보 제공 (최근2년)
+	DGK_UCNS_GRADUATEEMPLOYMENTRATE
+
+
+# 대학공시정보 지역별 통계 서비스
+SELECT * FROM SYSOBJECTS WHERE NAME LIKE 'DGK_RSS_%' AND XTYPE='U';
+	#학생 1인당 교육비 환원 현황 조회  학생 1인당 교육비 환원 현황 정보 제공
+	DGK_RSS_EDUCATIONALEXPENSESREDUCTIONCRNTST
+	
+	#재적학생 현황 조회 재적학생 현황 정보 제공
+	DGK_RSS_ENROLLEDSTUDENTCRNTST
+	
+	#신입생 충원 현황 조회 신입생 충원 현황 정보 제공
+	DGK_RSS_FRESHMANENSURECRNTST
+	
+	#전임교원 연구 실적 현황 조회 전임교원 연구 실적 현황 정보 제공
+	DGK_RSS_FULLTIMEFACULTYRESEARCHCRNTST
+	
+	#졸업생의 진학, 취업 현황 조회  졸업생의 진학,취업 현황 정보 제공
+	DGK_RSS_GRADUATEENTERFINDJOBCRNTST
+	
+	# 강의담당비율 조회 전임교원 강의담당비율 정보 제공
+	DGK_RSS_LECTURECHARGERATIO
+	
+	#전임교원 확보 현황 조회  전임교원 확보 현황 정보 제공
+	DGK_RSS_RULLTIMEFACULTYENSURECRNTST
+	
+	#교지, 교사 확보율 조회  교지·교사 확보율 정보 제공
+	DGK_RSS_SCHOOLGROUNDSANDBDSENSURERATE
+
+# 대학공시정보 대학비교통계 서비스
+SELECT * FROM SYSOBJECTS WHERE NAME LIKE 'DGK_UCSS_%' AND XTYPE='U';
+	#학생 1인당 교육비 환원 현황 조회  학생 1인당 교육비 환원 현황 정보 제공
+	DGK_UCSS_EDUCATIONALEXPENSESREDUCTIONCRNTST
+
+	#재적학생 현황 조회 재적학생 현황 정보 제공
+	DGK_UCSS_ENROLLEDSTUDENTCRNTST
+
+	#신입생 충원 현황 조회 신입생 충원 현황 정보 제공
+	DGK_UCSS_FRESHMANENSURECRNTST
+
+	# 전임교원 확보 현황 조회 전임교원 확보 현황 정보 제공
+	DGK_UCSS_FULLTIMEFACULTYENSURECRNTST
+
+	#전임교원 연구 실적 현황 조회 전임교원 연구 실적 현황 정보 제공
+	DGK_UCSS_FULLTIMEFACULTYRESEARCHCRNTST
+	
+	#졸업생의 진학, 취업 현황 조회  졸업생의 진학,취업 현황 정보 제공
+	DGK_UCSS_GRADUATEENTERFINDJOBCRNTST
+	
+	#강의담당비율 조회  강의담당비율 정보 제공
+	DGK_UCSS_LECTURECHARGERATIO
+
+	#공시년도
+	DGK_UCSS_PUBYEAR
+
+	#교지, 교사 확보율 조회  교지·교사 확보율 정보 제공
+	DGK_UCSS_SCHOOLGROUNDSANDBDSENSURERATE
+
+	# 대학 검색목록 대학비교통계 조회를 위한 대학 검색목록 제공 (getUniversityCode 와 동일)
+	DGK_UCSS_UNIVERSITYSEARCHLIST
+
+  

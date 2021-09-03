@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+
+	 <bean id="DairyBatch" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="apt.batch.DairyBatch"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="commonImpl" value-ref="commonImpl" />
+				<entry key="transactionManager" value-ref="transactionManager" />
+			</map>
+		</property>
+    </bean>
+	<bean id="DairyTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="DairyBatch"/>
+		<property name="cronExpression" value="*/15 * * * * ?"/>
+	</bean>
+		
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="DairyTrigger"/>
+			</list>
+		</property>
+	</bean> 
+	<!-- 
+	2
+	<bean id="DairyBatch2" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="apt.batch.DairyBatch2"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="commonImpl" value-ref="commonImpl" />
+				<entry key="transactionManager" value-ref="transactionManager" />
+			</map>
+		</property>
+    </bean>
+	<bean id="DairyTrigger2" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="DairyBatch2"/>
+		<property name="cronExpression" value="00 28 14 * * ?"/>
+	</bean>
+		
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="DairyTrigger2"/>
+			</list>
+		</property>
+	</bean> 
+	 -->
+	<!--
+	3 
+	<bean id="DairyBatch3" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="apt.batch.DairyBatch3"/>
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="commonImpl" value-ref="commonImpl" />
+				<entry key="transactionManager" value-ref="transactionManager" />
+			</map>
+		</property>
+    </bean>
+	<bean id="DairyTrigger3" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="DairyBatch3"/>
+		<property name="cronExpression" value="0 0/37 * * * ?"/>
+		<property name="cronExpression" value="0 7 0/1 * * ?"/>
+	</bean>
+		
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="DairyTrigger3"/>
+			</list>
+		</property>
+	</bean>
+	 -->
+</beans>
+

@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Api">
+
+	<select id="getParcelOutInfo_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM PARCEL_OUT_INFO A  
+		WHERE 1 = 1
+		<if test="SCH_TOP_LAWD_CD != null and SCH_TOP_LAWD_CD != ''">
+			AND SUBSTRING(A.REGIONAL_CODE, 1,2) = SUBSTRING(#{SCH_TOP_LAWD_CD}, 1,2)
+		</if>
+		<if test="SCH_LAWD_CD != null and SCH_LAWD_CD != ''">
+			AND A.REGIONAL_CODE = #{SCH_LAWD_CD}
+		</if>
+		<if test="SCH_APARTMENT_NAME != null and SCH_APARTMENT_NAME != ''">
+			AND (
+					A.APARTMENT_NAME LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+					OR
+					A.DONG LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+					OR
+					A.SIGUNGU LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+				)
+		</if>
+		<if test="SCH_AREA_EXCLUSIVE_USE != null and SCH_AREA_EXCLUSIVE_USE != ''">
+			AND A.AREA_EXCLUSIVE_USE LIKE CONCAT('%', #{SCH_AREA_EXCLUSIVE_USE},'%')
+		</if>
+	</select>
+	
+	
+	<select id="getParcelOutInfo_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.*
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  *
+					FROM PARCEL_OUT_INFO A
+					WHERE 1 = 1	
+					<if test="SCH_TOP_LAWD_CD != null and SCH_TOP_LAWD_CD != ''">
+						AND SUBSTRING(A.REGIONAL_CODE, 1,2) = SUBSTRING(#{SCH_TOP_LAWD_CD}, 1,2)
+					</if>
+					<if test="SCH_LAWD_CD != null and SCH_LAWD_CD != ''">
+						AND A.REGIONAL_CODE = #{SCH_LAWD_CD}
+					</if>
+					<if test="SCH_APARTMENT_NAME != null and SCH_APARTMENT_NAME != ''">
+						AND (
+								A.APARTMENT_NAME LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+								OR
+								A.DONG LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+								OR
+								A.SIGUNGU LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+							)
+					</if>
+					<if test="SCH_AREA_EXCLUSIVE_USE != null and SCH_AREA_EXCLUSIVE_USE != ''">
+						AND A.AREA_EXCLUSIVE_USE LIKE CONCAT('%', #{SCH_AREA_EXCLUSIVE_USE},'%')
+					</if>
+					ORDER BY A.DEAL_YEAR DESC, CAST(A.DEAL_MONTH AS UNSIGNED) DESC, CAST(A.DEAL_DAY AS UNSIGNED)DESC
+					<if test="DEFAULT == 'Y'.toString()">
+						LIMIT 10
+					</if>
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY DEAL_YEAR DESC, CAST(DEAL_MONTH AS UNSIGNED) DESC, CAST(DEAL_DAY AS UNSIGNED)DESC
+	</select>
+	
+	
+	<select id="getDealAptInfo_CNT"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM(
+			SELECT
+				MAX(DEAL_AMOUNT)AS DEAL_AMOUNT
+			  , DEAL_YEAR
+			  , MAX(DEAL_MONTH)AS DEAL_MONTH
+			  , MAX(DEAL_DAY)AS DEAL_DAY
+			  , ROAD_NAME_BONBUN
+			  , AREA_EXCLUSIVE_USE
+			  , APARTMENT_NAME
+			  , MAX(FLOOR)AS FLOOR
+			  , ADDRESS
+			FROM DEAL_APT_INFO A  
+			WHERE 1 = 1
+			<if test="SCH_TOP_LAWD_CD != null and SCH_TOP_LAWD_CD != ''">
+				AND A.SIDO_CODE = SUBSTRING(#{SCH_TOP_LAWD_CD}, 1,2)
+			</if>
+			<if test="SCH_LAWD_CD != null and SCH_LAWD_CD != ''">
+				AND A.REGIONAL_CODE = #{SCH_LAWD_CD}
+			</if>
+			<if test="SCH_APARTMENT_NAME != null and SCH_APARTMENT_NAME != ''">
+				AND (
+						A.APARTMENT_NAME LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+						OR
+						A.ADDRESS LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+					)
+			</if>
+			<if test="SCH_AREA_EXCLUSIVE_USE != null and SCH_AREA_EXCLUSIVE_USE != ''">
+				AND A.AREA_EXCLUSIVE_USE LIKE CONCAT('%', #{SCH_AREA_EXCLUSIVE_USE},'%')
+			</if>
+			GROUP BY ROAD_NAME_BONBUN, ADDRESS, AREA_EXCLUSIVE_USE, APARTMENT_NAME, DEAL_YEAR
+		)T
+	</select>
+	
+	
+	
+	<select id="getDealAptInfo_List"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.* 
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+						  A.*
+					FROM DEAL_APT_INFO A 
+					WHERE 1 = 1	
+					<if test="SCH_TOP_LAWD_CD != null and SCH_TOP_LAWD_CD != ''">
+						AND SUBSTRING(A.REGIONAL_CODE, 1,2) = SUBSTRING(#{SCH_TOP_LAWD_CD}, 1,2)
+					</if>
+					<if test="SCH_LAWD_CD != null and SCH_LAWD_CD != ''">
+						AND A.REGIONAL_CODE = #{SCH_LAWD_CD}
+					</if>
+					<if test="SCH_APARTMENT_NAME != null and SCH_APARTMENT_NAME != ''">
+						AND (
+								A.APARTMENT_NAME LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+								OR
+								A.ADDRESS LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+							)
+					</if>
+					<if test="SCH_AREA_EXCLUSIVE_USE != null and SCH_AREA_EXCLUSIVE_USE != ''">
+						AND A.AREA_EXCLUSIVE_USE LIKE CONCAT('%', #{SCH_AREA_EXCLUSIVE_USE},'%')
+					</if>
+					ORDER BY A.DEAL_YEAR DESC, CAST(A.DEAL_MONTH AS UNSIGNED) DESC, CAST(A.DEAL_DAY AS UNSIGNED)DESC
+					<if test="DEFAULT == 'Y'.toString()">
+						LIMIT 10
+					</if>
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY DEAL_YEAR DESC, CAST(DEAL_MONTH AS UNSIGNED) DESC, CAST(DEAL_DAY AS UNSIGNED)DESC
+	</select>
+	
+	
+	<select id="getDealAptInfoSearch_List"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TBA.* 
+		FROM(
+			SELECT
+				TB.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+					T.*
+					, @RNUM := @RNUM + 1  AS RNUM
+				FROM(
+					SELECT
+					    MAX(DEAL_AMOUNT)AS DEAL_AMOUNT
+					  , DEAL_YEAR
+					  , MAX(DEAL_MONTH)AS DEAL_MONTH
+					  , MAX(DEAL_DAY)AS DEAL_DAY
+					  , ROAD_NAME_BONBUN
+					  , AREA_EXCLUSIVE_USE
+					  , APARTMENT_NAME
+					  , MAX(FLOOR)AS FLOOR
+					  , ADDRESS
+					FROM DEAL_APT_INFO A
+					WHERE 1 = 1
+					<if test="SCH_TOP_LAWD_CD != null and SCH_TOP_LAWD_CD != ''">
+						AND A.SIDO_CODE = SUBSTRING(#{SCH_TOP_LAWD_CD}, 1,2)
+					</if>
+					<if test="SCH_LAWD_CD != null and SCH_LAWD_CD != ''">
+						AND A.REGIONAL_CODE = #{SCH_LAWD_CD}
+					</if>
+					<if test="SCH_APARTMENT_NAME != null and SCH_APARTMENT_NAME != ''">
+						AND (
+								A.APARTMENT_NAME LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+								OR
+								A.ADDRESS LIKE CONCAT('%', #{SCH_APARTMENT_NAME},'%')
+							)
+					</if>
+					<if test="SCH_AREA_EXCLUSIVE_USE != null and SCH_AREA_EXCLUSIVE_USE != ''">
+						AND A.AREA_EXCLUSIVE_USE LIKE CONCAT('%', #{SCH_AREA_EXCLUSIVE_USE},'%')
+					</if>
+					GROUP BY ROAD_NAME_BONBUN, ADDRESS, AREA_EXCLUSIVE_USE, APARTMENT_NAME, DEAL_YEAR
+					ORDER BY A.DEAL_YEAR DESC, CAST(A.DEAL_MONTH AS UNSIGNED) DESC, CAST(A.DEAL_DAY AS UNSIGNED)DESC
+				)T,(SELECT @RNUM := 0 ) STR	
+			)TB
+		)TBA
+		WHERE PAGE = #{CURR_PAGE}
+		ORDER BY DEAL_YEAR DESC, CAST(DEAL_MONTH AS UNSIGNED) DESC, CAST(DEAL_DAY AS UNSIGNED)DESC
+	</select>
+	
+	
+	<insert id="ParcelOutInfo_Insert">
+		INSERT INTO PARCEL_OUT_INFO(
+			  DEAL_AMOUNT             
+			, DEAL_YEAR		
+			, APARTMENT_NAME          
+			, DONG			
+			, SIGUNGU			
+			, DEAL_MONTH              
+			, DEAL_DAY		
+			, AREA_EXCLUSIVE_USE      
+			, JIBUN			
+			, REGIONAL_CODE           
+			, FLOOR			
+		)VALUES(
+			  #{DEAL_AMOUNT}             
+			, #{DEAL_YEAR}		
+			, #{APARTMENT_NAME}          
+			, #{DONG}			
+			, #{SIGUNGU}			
+			, #{DEAL_MONTH}              
+			, #{DEAL_DAY}		
+			, #{AREA_EXCLUSIVE_USE}      
+			, #{JIBUN}			
+			, #{REGIONAL_CODE}           
+			, #{FLOOR}	
+		)
+	</insert>
+	
+	
+	<insert id="RealAptInfo_Insert">
+		INSERT INTO DEAL_APT_INFO(
+			  DEAL_AMOUNT 
+			, BUILD_YEAR              
+			, DEAL_YEAR               
+			, ROAD_NAME               
+			, ROAD_NAME_BONBUN        
+			, ROAD_NAME_BUBUN         
+			, ROAD_NAME_SIGUNGU_CODE  
+			, ROAD_NAME_SEQ    
+			, ROAD_NAME_BASEMENT_CODE 
+			, ROAD_NAME_CODE          
+			, DONG                    
+			, BONBUN                  
+			, BUBUN                   
+			, SIGUNGU_CODE            
+			, EUBMYUNDONG_CODE        
+			, LAND_CODE               
+			, APARTMENT_NAME          
+			, DEAL_MONTH              
+			, DEAL_DAY                
+			, SIREAL_NO               
+			, AREA_EXCLUSIVE_USE      
+			, JIBUN                   
+			, REGIONAL_CODE           
+			, FLOOR         
+			, SIDO_CODE     
+			, ADDRESS     
+			, X_LOCATION     
+			, Y_LOCATION     
+		)VALUES(
+			  #{DEAL_AMOUNT}             
+			, #{BUILD_YEAR}              
+			, #{DEAL_YEAR}               
+			, #{ROAD_NAME}               
+			, #{ROAD_NAME_BONBUN}        
+			, #{ROAD_NAME_BUBUN}         
+			, #{ROAD_NAME_SIGUNGU_CODE}  
+			, #{ROAD_NAME_SEQ}   
+			, #{ROAD_NAME_BASEMENT_CODE} 
+			, #{ROAD_NAME_CODE}          
+			, #{DONG}                    
+			, #{BONBUN}                  
+			, #{BUBUN}                   
+			, #{SIGUNGU_CODE}            
+			, #{EUBMYUNDONG_CODE}        
+			, #{LAND_CODE}               
+			, #{APARTMENT_NAME}          
+			, #{DEAL_MONTH}              
+			, #{DEAL_DAY}                
+			, #{SIREAL_NO}               
+			, #{AREA_EXCLUSIVE_USE}      
+			, #{JIBUN}                   
+			, #{REGIONAL_CODE}           
+			, #{FLOOR}
+			, #{SIDO_CODE}
+			, #{ADDRESS}     
+			, #{X_LOCATION}     
+			, #{Y_LOCATION}  
+		)
+	</insert>
+	
+	
+	<delete id="ParcelOutInfo_Delete">
+		DELETE FROM PARCEL_OUT_INFO
+		WHERE DEAL_YEAR = #{DEAL_YEAR}
+		AND DEAL_MONTH = #{DEAL_MONTH}
+	</delete>
+	
+	<delete id="DealAptInfo_Delete">
+		DELETE FROM DEAL_APT_INFO
+		WHERE DEAL_YEAR = #{DEAL_YEAR}
+		AND DEAL_MONTH = #{DEAL_MONTH}
+	</delete>
+	
+	
+	<select id="getSiGunGuNmData" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT 
+		    A.CODENM
+		  , (SELECT CODENM FROM COM_CODE WHERE GRP_CODE = '0001' AND A.UP_CODE = CODE )AS UP_NM
+		FROM COM_CODE A
+		WHERE A.GRP_CODE = '0002'
+		AND CODE = #{REGIONAL_CODE}
+	</select>
+	
+	
+	<select id="getAptDeal_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			A.*
+			, REPLACE(REPLACE(DEAL_AMOUNT, ',', ''), ' ', '')AS MAX_AMT 
+		FROM DEAL_APT_INFO A
+		WHERE A.APARTMENT_NAME = #{APARTMENT_NAME}
+		AND A.ROAD_NAME_BONBUN = #{ROAD_NAME_BONBUN}
+		AND A.AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+		ORDER BY A.DEAL_YEAR DESC, CAST(A.DEAL_MONTH AS UNSIGNED) DESC, CAST(A.DEAL_DAY AS UNSIGNED)DESC
+	</select>
+	
+	
+	<select id="getAptDeal_ChartList" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			T.*
+		FROM(
+			SELECT
+				  A.DEAL_YEAR
+				, A.DEAL_MONTH
+				, REPLACE(REPLACE(A.DEAL_AMOUNT, ',', ''), ' ', '')AS MAX_AMT  
+			FROM DEAL_APT_INFO A
+			WHERE A.APARTMENT_NAME = #{APARTMENT_NAME}
+			AND A.ROAD_NAME_BONBUN = #{ROAD_NAME_BONBUN}
+			AND A.AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+			GROUP BY A.DEAL_YEAR , A.DEAL_MONTH ,A.DEAL_AMOUNT
+			ORDER BY A.DEAL_YEAR , CAST(A.DEAL_MONTH AS UNSIGNED) , CAST(A.DEAL_DAY AS UNSIGNED)
+			LIMIT 13
+		)T
+		ORDER BY DEAL_YEAR, DEAL_MONTH
+	</select>
+	
+	
+	<update id="XY_location_Update">
+		UPDATE DEAL_APT_INFO SET
+			  X_LOCATION = #{X_LOCATION}
+			, Y_LOCATION = #{Y_LOCATION}
+		WHERE APARTMENT_NAME = #{APARTMENT_NAME}
+		AND ROAD_NAME_BONBUN = #{ROAD_NAME_BONBUN}
+		AND AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+	</update>
+	
+	
+	<select id="getAptParcelOut_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			A.*
+		FROM PARCEL_OUT_INFO A
+		WHERE A.APARTMENT_NAME = #{APARTMENT_NAME}
+		AND A.AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+		AND A.JIBUN = #{JIBUN}
+		AND A.REGIONAL_CODE = #{REGIONAL_CODE}
+		ORDER BY A.DEAL_YEAR DESC, CAST(A.DEAL_MONTH AS UNSIGNED) DESC, CAST(A.DEAL_DAY AS UNSIGNED)DESC
+	</select>
+	
+	
+	<select id="getAptParcelOut_ChartList" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			T.*
+		FROM(
+			SELECT
+				  A.DEAL_YEAR
+				, A.DEAL_MONTH
+				, REPLACE(REPLACE(A.DEAL_AMOUNT, ',', ''), ' ', '')AS MAX_AMT 
+			FROM PARCEL_OUT_INFO A
+			WHERE A.APARTMENT_NAME = #{APARTMENT_NAME}
+			AND A.AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+			AND A.JIBUN = #{JIBUN}
+			AND A.REGIONAL_CODE = #{REGIONAL_CODE}
+			GROUP BY A.DEAL_YEAR , A.DEAL_MONTH ,A.DEAL_AMOUNT
+			ORDER BY A.DEAL_YEAR , CAST(A.DEAL_MONTH AS UNSIGNED) , CAST(A.DEAL_DAY AS UNSIGNED)
+			LIMIT 13
+		)T
+		ORDER BY DEAL_YEAR, DEAL_MONTH
+	</select>
+	
+	
+	<update id="XY_locationPo_Update">
+		UPDATE PARCEL_OUT_INFO SET
+			  X_LOCATION = #{X_LOCATION}
+			, Y_LOCATION = #{Y_LOCATION}
+			, ADDRESS = #{ADDRESS}
+		WHERE APARTMENT_NAME = #{APARTMENT_NAME}
+		AND AREA_EXCLUSIVE_USE = #{AREA_EXCLUSIVE_USE}
+		AND JIBUN = #{JIBUN}
+		AND REGIONAL_CODE = #{REGIONAL_CODE}
+	</update>
+	
+	
+	<select id="serachComPareAptDeal_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  APARTMENT_NAME
+			, ADDRESS
+			, AREA_EXCLUSIVE_USE
+		    , ROAD_NAME_BONBUN
+		FROM DEAL_APT_INFO
+		WHERE 1 = 1
+		AND APARTMENT_NAME LIKE CONCAT('%', #{A_NM},'%')
+		AND SIDO_CODE = #{SIDO_CD}
+		GROUP BY APARTMENT_NAME , ADDRESS , AREA_EXCLUSIVE_USE, ROAD_NAME_BONBUN, AREA_EXCLUSIVE_USE
+		ORDER BY AREA_EXCLUSIVE_USE DESC
+	</select>
+	
+	<select id="getAptCompareDeal_ChartList" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			T.*
+		FROM(
+			SELECT
+				  A.DEAL_YEAR
+				, A.DEAL_MONTH
+				, REPLACE(REPLACE(MAX(A.DEAL_AMOUNT), ',', ''), ' ', '')AS MAX_AMT  
+        		, IFNULL(B.DEAL_YEAR, 0) AS BDEAL_YEAR
+				, IFNULL( B.DEAL_MONTH, 0) AS BDEAL_MONTH
+				, IFNULL(REPLACE(REPLACE(MAX(B.DEAL_AMOUNT), ',', ''), ' ', ''), 0)AS BMAX_AMT  
+			FROM DEAL_APT_INFO A 
+				LEFT OUTER JOIN DEAL_APT_INFO B ON A.DEAL_YEAR = B.DEAL_YEAR 
+												AND A.DEAL_MONTH = B.DEAL_MONTH 
+												AND B.APARTMENT_NAME = #{YOU_APARTMENT_NAME}
+												AND B.ROAD_NAME_BONBUN = #{YOU_ROAD_NAME_BONBUN}
+												AND B.AREA_EXCLUSIVE_USE = #{YOU_AREA_EXCLUSIVE_USE}
+			WHERE A.APARTMENT_NAME = #{MY_APARTMENT_NAME}
+			AND A.ROAD_NAME_BONBUN = #{MY_ROAD_NAME_BONBUN}
+			AND A.AREA_EXCLUSIVE_USE = #{MY_AREA_EXCLUSIVE_USE}
+			GROUP BY A.DEAL_YEAR , A.DEAL_MONTH , B.DEAL_YEAR, B.DEAL_MONTH
+			ORDER BY A.DEAL_YEAR , CAST(A.DEAL_MONTH AS UNSIGNED) , CAST(A.DEAL_DAY AS UNSIGNED)
+			LIMIT 10
+		)T
+		ORDER BY DEAL_YEAR, DEAL_MONTH
+	</select>
+	
+	<select id="getAptCompareOut_ChartList" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			T.* 
+		FROM(
+			SELECT
+				  A.DEAL_YEAR
+				, A.DEAL_MONTH
+				, REPLACE(REPLACE(MAX(A.DEAL_AMOUNT), ',', ''), ' ', '')AS MAX_AMT  
+        		, IFNULL(B.DEAL_YEAR, 0) AS BDEAL_YEAR
+				, IFNULL( B.DEAL_MONTH, 0) AS BDEAL_MONTH
+				, IFNULL(REPLACE(REPLACE(MAX(B.DEAL_AMOUNT), ',', ''), ' ', ''), 0)AS BMAX_AMT  
+			FROM PARCEL_OUT_INFO A LEFT OUTER JOIN PARCEL_OUT_INFO B ON A.DEAL_YEAR = B.DEAL_YEAR 
+												AND A.DEAL_MONTH = B.DEAL_MONTH 
+												AND B.APARTMENT_NAME = #{YOU_APARTMENT_NAME}
+												AND B.JIBUN = #{YOU_JIBUN}
+												AND B.AREA_EXCLUSIVE_USE = #{YOU_AREA_EXCLUSIVE_USE}
+												AND B.REGIONAL_CODE = #{YOU_REGIONAL_CODE}
+			WHERE A.APARTMENT_NAME = #{MY_APARTMENT_NAME}
+			AND A.AREA_EXCLUSIVE_USE = #{MY_AREA_EXCLUSIVE_USE}
+			AND A.JIBUN = #{MY_JIBUN}
+			AND A.REGIONAL_CODE = #{MY_REGIONAL_CODE}
+			GROUP BY A.DEAL_YEAR , A.DEAL_MONTH ,A.DEAL_AMOUNT
+			ORDER BY A.DEAL_YEAR , CAST(A.DEAL_MONTH AS UNSIGNED) , CAST(A.DEAL_DAY AS UNSIGNED)
+			LIMIT 10
+		)T
+		ORDER BY DEAL_YEAR, DEAL_MONTH
+	</select>
+	
+	
+	
+	
+	<select id="serachComPareAptOut_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  APARTMENT_NAME
+			, CONCAT(SIGUNGU, DONG, JIBUN) AS ADDRESS
+			, AREA_EXCLUSIVE_USE
+		    , JIBUN
+		    , REGIONAL_CODE
+		FROM PARCEL_OUT_INFO
+		WHERE 1 = 1
+		AND APARTMENT_NAME LIKE CONCAT('%', #{A_NM},'%')
+		AND SUBSTRING(REGIONAL_CODE, 1,2) = #{SIDO_CD}
+		GROUP BY APARTMENT_NAME , SIGUNGU , DONG, JIBUN, AREA_EXCLUSIVE_USE, REGIONAL_CODE
+		ORDER BY AREA_EXCLUSIVE_USE DESC
+	</select>
+		
+</mapper>

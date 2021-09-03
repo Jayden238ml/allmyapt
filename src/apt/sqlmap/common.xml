@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper      
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"      
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Common">
+
+	<select id="SelectAs" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT * FROM COM_CONN_TEMP
+	</select>
+	
+	
+	<select id="getMenuUserTop"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT 
+		      M.MENU_CODE
+			, M.MENUNM
+		    , M.USER_DVID
+		    , (SELECT MENU_URL FROM SY_MENU WHERE PRTCODE = M.MENU_CODE AND MENU_LEVL = '2' order by EXPS_ORDR LIMIT 1 )AS MENU_URL
+		FROM SY_MENU M 
+		WHERE M.USE_YN = 'Y' 
+		AND M.PRTCODE ='TOP' 
+		AND MENU_LEVL = '1'
+		ORDER BY M.EXPS_ORDR
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getMenuUserLeft" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			*
+		FROM SY_MENU M
+		WHERE M.USE_YN = 'Y' 
+		AND M.PRTCODE !='TOP' 
+		AND MENU_LEVL = '2' 
+		<if test="SESSION_USER_TYPE != null and SESSION_USER_TYPE != ''">
+				AND (
+						M.MENU_EXPL LIKE CONCAT('%', #{SESSION_USER_TYPE},'%')
+						OR
+						M.MENU_EXPL = 'USER'
+					)
+		</if>
+		ORDER BY M.EXPS_ORDR
+		LIMIT 9999999
+	</select>
+	
+	
+	<select id="getuser_InfoForLogin" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			  USER_ID
+			, USER_NM
+			, USER_NICK
+			, APT_CODE
+			, USER_TYPE
+			, USER_PWD
+			, USER_EMAIL
+			, USER_HP
+			, RET_YN
+			, (SELECT GROUP_CONCAT(AUTH_CODE) FROM SY_AUTH_USER WHERE AUTH_USER = A.USER_ID)AS AUTH_CODE
+		FROM COM_USER_INFO A
+		WHERE 1 = 1
+		AND RET_YN = 'N'
+		AND USER_ID = #{USER_ID}
+		AND USER_PWD = MD5(#{USER_PWD})
+	</select>
+	
+	
+	<insert id="insertLoginIp">
+		INSERT INTO LOGIN_IP_INFO(
+			  USER_ID
+			, LOGIN_IP
+			, LOGIN_DT
+			, DEVICE
+			, AGENT
+		)VALUES(
+			  #{USER_ID}
+			, #{LOGIN_IP}
+			, NOW()
+			, #{DEVICE}
+			, AGENT
+		)
+	</insert>
+	
+	
+	<!--첫 레프트 메뉴 -->
+ 	<select id="getMenuUserLeftView"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+		      A.MENU_CODE		
+			, A.MENUNM  
+			, A.MENU_URL		
+			, A.MENU_LEVL		
+			, A.PRTCODE    
+		FROM SY_MENU A 
+		WHERE PRTCODE = #{TMC}
+		AND MENU_LEVL = '2'
+		AND USE_YN = 'Y'
+		<if test="SESSION_USER_TYPE != null and SESSION_USER_TYPE != ''">
+				AND (
+						A.MENU_EXPL LIKE CONCAT('%', #{SESSION_USER_TYPE},'%')
+						OR
+						A.MENU_EXPL = 'USER'
+					)
+		</if>
+		ORDER BY EXPS_ORDR 
+		LIMIT  1
+ 	</select>
+	
+	<!--첫 레프트 메뉴 -->
+ 	<select id="getMenuUserLeftView2"  parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+		      A.MENU_CODE		
+			, A.MENUNM  
+			, A.MENU_URL		
+			, A.MENU_LEVL 					
+			, A.PRTCODE    
+		FROM SY_MENU A 
+		WHERE MENU_CODE = #{LMC}
+		AND MENU_LEVL = '2'
+		AND USE_YN = 'Y'
+		ORDER BY EXPS_ORDR 
+		LIMIT  1
+ 	</select>
+ 	
+ 	
+ 	<insert id="KaKaoUser_Insert">
+ 		INSERT INTO COM_USER_INFO(
+ 			  USER_ID
+			, USER_NM
+			, USER_NICK
+			, USER_TYPE
+			, USER_PWD
+			, REGDATE
+			, UPDDATE
+			, PROFILE_IMAGE
+ 		)VALUES(
+ 			  #{USER_ID}
+			, #{USER_NM}
+			, #{USER_NICK}
+			, 'K'
+			, MD5(#{USER_PWD})
+			, NOW()
+			, NOW()
+			, #{PROFILE_IMAGE}
+ 		)
+ 	</insert>
+ 	
+ 	
+ 	<insert id="NaverUser_Insert">
+ 		INSERT INTO COM_USER_INFO(
+ 			  USER_ID
+			, USER_NM
+			, USER_NICK
+			, USER_TYPE
+			, USER_PWD
+			, REGDATE
+			, UPDDATE
+			, PROFILE_IMAGE
+			, USER_EMAIL
+ 		)VALUES(
+ 			  #{USER_ID}
+			, #{USER_NM}
+			, #{USER_NICK}
+			, 'N'
+			, MD5(#{USER_PWD})
+			, NOW()
+			, NOW()
+			, #{PROFILE_IMAGE}
+			, #{USER_EMAIL}
+ 		)
+ 	</insert>
+ 	
+ 	
+ 	<select id="getuser_DupChk" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS CNT
+ 		FROM COM_USER_INFO
+ 		WHERE USER_ID = #{USER_ID}
+ 	</select>
+ 	
+ 	
+ 	<insert id="setSendMail_Insert">
+ 		INSERT INTO MAIL_SEND_INFO(
+ 			  USER_NM
+			, AGENCY_NM
+			, RETURN_HP
+			, RETURN_EMAIL
+			, CONTENTS
+			, REGDATE
+ 		)VALUES(
+ 			  #{USER_NM}
+			, #{AGENCY_NM}
+			, #{RETURN_HP}
+			, #{RETURN_EMAIL}
+			, #{CONTENTS}
+			, NOW()
+ 		)
+ 	</insert>
+ 	
+ 	
+ 	<select id="getuser_PwdChk" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			CASE WHEN COUNT(*) > 0 THEN 'Y' ELSE 'N' END AS CNT
+ 		FROM COM_USER_INFO
+ 		WHERE USER_ID = #{SESSION_USER_ID}
+ 		AND USER_PWD = MD5(#{USER_PWD})
+ 	</select>
+ 	
+ 	
+ 	<update id="getuser_Change">
+ 		UPDATE COM_USER_INFO SET
+ 			USER_NM = #{USER_NM}
+ 			, USER_HP = #{USER_HP}
+ 			<if test="NEW_USER_PWD != null and NEW_USER_PWD != ''">
+ 				, USER_PWD = MD5(#{NEW_USER_PWD})
+ 			</if>
+ 		WHERE USER_ID = #{SESSION_USER_ID}
+ 	</update>
+ 	
+ 	
+ 	<select id="getSido_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			  CODE
+ 			, CODENM
+ 		FROM COM_CODE
+ 		WHERE 1 = 1
+ 		AND USE_YN = 'Y'
+ 		AND GRP_CODE = '0001'
+ 		ORDER BY CODE
+ 	</select>
+ 	
+ 	
+ 	<select id="getAreaSiGunGu_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			  CODE
+ 			, CODENM
+ 		FROM COM_CODE
+ 		WHERE 1 = 1
+ 		AND USE_YN = 'Y'
+ 		AND GRP_CODE = '0002' 
+ 		AND UP_GRP_CODE = '0001'
+ 		AND UP_CODE = #{TMP_AREA_SIDO}
+ 		ORDER BY CODENM
+ 	</select>
+ 	
+ 	
+ 	<select id="getAreaSiGunGu_AllList" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			  CODE
+ 			, CODENM
+ 		FROM COM_CODE
+ 		WHERE 1 = 1
+ 		AND USE_YN = 'Y'
+ 		AND GRP_CODE = '0002' 
+ 		AND UP_GRP_CODE = '0001'
+ 		ORDER BY CODENM
+ 	</select>
+ 	
+ 	
+ 	<select id="getErect_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+ 		SELECT
+ 			  CODE
+ 			, CODENM
+ 		FROM COM_CODE
+ 		WHERE 1 = 1
+ 		AND USE_YN = 'Y'
+ 		AND GRP_CODE = '0003' 
+ 		ORDER BY EXPS_ORDR
+ 	</select>
+	
+</mapper>
