@@ -308,6 +308,7 @@
 						<li class="sub-depth2"><a href="javascript:fnMobileClickTopMenu('LMC009');"><span>위임장 변경이력</span></a></li>
 						<li class="sub-depth2"><a href="javascript:fnMobileClickTopMenu('LMC010');"><span>회비관리</span></a></li>
 						<li class="sub-depth2"><a href="javascript:fnMobileClickTopMenu('LMC017');"><span>문자발송</span></a></li>
+						<li class="sub-depth2"><a href="javascript:fnMobileClickTopMenu('LMC019');"><span>입금/발송이력</span></a></li>
 <%-- 						<c:if test="${INIT_DATA.SESSION_USER_TYPE  eq 'NG'}"> --%>
 <!-- 							<li class="sub-depth2"><a href="#"><span>네이버 회원</span></a></li> -->
 <%-- 						</c:if> --%>

@@ -827,7 +827,7 @@ public class AptController extends LincActionController{
 						if("SMS".equals(msg_type)) {
 							amt = 10;
 						}else {
-							amt = 27;
+							amt = 30;
 						}
 						if(success_cnt > 0) {
 							dataMap.put("NOW_AMT", success_cnt * amt);
@@ -835,6 +835,16 @@ public class AptController extends LincActionController{
 							
 							dataMap.put("procedureid", "Warrant.aptSendSms_Update");
 							commonFacade.processUpdate(dataMap);
+							
+							dataMap.put("APT_CODE", dataMap.getString("SESSION_APT_CODE"));
+							dataMap.put("TIT_GUBUN", "출금");
+							dataMap.put("CONT", dataMap.getString("SMS_CONT"));
+							dataMap.put("AMT", success_cnt * amt);
+							dataMap.put("SEND_CNT", success_cnt);
+							// 히스토리 저장
+							dataMap.put("procedureid", "Warrant.aptSMSSendDtl_Insert");
+							commonFacade.processUpdate(dataMap);
+							
 						}
 					}
 					
@@ -859,13 +869,21 @@ public class AptController extends LincActionController{
 					if("SMS".equals(msg_type)) {
 						amt = 10;
 					}else {
-						amt = 27;
+						amt = 30;
 					}
 					if(success_cnt > 0) {
 						dataMap.put("NOW_AMT", success_cnt * amt);
 						dataMap.put("SUCCESS_CNT", success_cnt);
 						
 						dataMap.put("procedureid", "Warrant.aptSendSms_Update");
+						commonFacade.processUpdate(dataMap);
+						
+						dataMap.put("TIT_GUBUN", "출금");
+						dataMap.put("CONT", dataMap.getString("SMS_CONT"));
+						dataMap.put("AMT", success_cnt * amt);
+						dataMap.put("SEND_CNT", success_cnt);
+						// 히스토리 저장
+						dataMap.put("procedureid", "Warrant.aptSMSSendDtl_Insert");
 						commonFacade.processUpdate(dataMap);
 					}
 				}
@@ -952,6 +970,35 @@ public class AptController extends LincActionController{
 		
 		return result;
 	}
+	
+	
+	/**
+	 * 입금/발송이력
+	 */
+	@RequestMapping({"/apt/smsSendHist.do"})
+	public ModelAndView smsSendHist(@ModelAttribute("requestParam") DataMap dataMap, HttpServletRequest request, HttpServletResponse response
+			 ,@RequestParam(value="PAGE_SIZE", required=false, defaultValue="10")String view_size
+			  ,@RequestParam(value="CURR_PAGE", required=false, defaultValue="1")String page){
+		String modelName = "/ourapt/smsHistList";
+		try {
+			
+			dataMap.put("CURR_PAGE",page);
+			dataMap.put("PAGE_SIZE",view_size);
+			
+			dataMap.put("procedureid", "Warrant.getSmsSendDtl_CNT");
+			DataMap cntMap = this.commonFacade.getObject(dataMap);
+			dataMap.put("TOTAL_CNT", cntMap.getString("TOTAL_CNT"));
+			
+			dataMap.put("procedureid", "Warrant.getSmsSendDtl_List");
+			List resultList = commonFacade.list(dataMap);
+			dataMap.put("resultList", resultList);
+			
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return new ModelAndView(modelName, "INIT_DATA", dataMap);
+	}
+
 	
 	
 	/**

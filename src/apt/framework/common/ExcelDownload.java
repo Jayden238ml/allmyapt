@@ -209,4 +209,55 @@ public class ExcelDownload extends MultiActionController
 		
 		return mav;
 	}
+	
+	
+	@RequestMapping({"/apt/SmsHistExcelDown.do"})
+	public ModelAndView SmsHistExcelDown(@ModelAttribute("requestParam") DataMap dataMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		List excelList = null;
+		DataMap excel_Resource = new DataMap();
+		
+		String fileName = null;
+		String sheetName = null;
+		String tbName = null;
+		
+		String[] col_nm = null;
+		String[] key_nm = null;
+		try{
+			dataMap.put("TOTAL_CNT", "0");
+			dataMap.put("PAGE_SIZE", "1000000");
+			dataMap.put("CURR_PAGE", "1");
+			
+			dataMap.put("procedureid", "Warrant.getSmsSendDtl_CNT");
+			DataMap cntMap = this.commonFacade.getObject(dataMap);
+			if(cntMap == null || "".equals(cntMap)){
+				dataMap.put("TOTAL_CNT", "0");
+			}else {
+				dataMap.put("TOTAL_CNT", cntMap.getString("TOTAL_CNT"));
+			}
+			
+			dataMap.put("procedureid", "Warrant.getSmsSendDtl_List");
+			excelList = commonFacade.list(dataMap);
+			
+			fileName = "입금_발송이력";
+			sheetName = "입금_발송이력";
+			tbName = "입금_발송이력";
+			
+			col_nm = new String[] { "구분", "금액", "일자", "입금/발송건수"};
+			key_nm = new String[] { "TIT_GUBUN", "AMT", "REGDATE", "SEND_CNT"};
+			
+			excel_Resource.put("fileName", fileName);
+			excel_Resource.put("sheetName", sheetName);
+			excel_Resource.put("tbName", tbName);
+			
+			excel_Resource.put("excelList", excelList);
+			excel_Resource.put("key_nm", key_nm);
+			excel_Resource.put("col_nm", col_nm);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ModelAndView mav = new ModelAndView(this.ExcelView);
+		mav.addObject("excel_Resource", excel_Resource);
+		
+		return mav;
+	}
 }

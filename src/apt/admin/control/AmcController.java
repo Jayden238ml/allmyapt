@@ -324,6 +324,14 @@ public class AmcController extends LincActionController {
 				  commonFacade.processInsert(dataMap);
 			  }
 			  
+			  dataMap.put("TIT_GUBUN", "입금");
+			  dataMap.put("CONT", "입금");
+			  dataMap.put("AMT", dataMap.getString("SEND_AMT"));
+			  dataMap.put("SEND_CNT", "1");
+			  // 히스토리 저장
+			  dataMap.put("procedureid", "Warrant.aptSMSSendDtl_Insert");
+			  commonFacade.processUpdate(dataMap);
+			  
 			  transactionManager.commit(status);
 		  }catch (Exception e) {
 			  transactionManager.rollback(status);

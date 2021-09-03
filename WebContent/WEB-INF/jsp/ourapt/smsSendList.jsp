@@ -262,7 +262,7 @@
 									</c:if>
 									<c:if test="${empty INIT_DATA.resultList}">
 										<tr>
-											<td class="no-list" colspan="4">검색결과가 없습니다.</td>
+											<td class="no-list" colspan="5">검색결과가 없습니다.</td>
 										</tr>
 									</c:if>
 								</tbody>

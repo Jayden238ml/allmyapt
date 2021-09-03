@@ -987,6 +987,25 @@
 		ORDER BY APT_NM
 	</select>
 	
+	
+	<insert id="aptSMSSendDtl_Insert">
+		INSERT INTO SMS_SEND_DTL(
+			  APT_CODE
+			, TIT_GUBUN
+			, CONT
+			, REGDATE
+			, AMT
+			, SEND_CNT
+		)VALUES(
+			  #{APT_CODE}
+			, #{TIT_GUBUN}
+			, #{CONT}
+			, NOW()
+			, #{AMT}
+			, #{SEND_CNT}
+		)
+	</insert>
+	
 	<select id="getSearchDong_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
 		SELECT
 			DONG	
@@ -1018,6 +1037,53 @@
 		AND HOSU = #{SCH_HOSU}
 		AND USER_NM = #{USER_NM}
 		AND REPLACE(HP, '-','') = CONCAT(#{HP1}, #{HP2}, #{HP3})
+	</select>
+	
+	
+	<select id="getSmsSendDtl_CNT" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			COUNT(*) AS TOTAL_CNT
+		FROM SMS_SEND_DTL
+		WHERE APT_CODE = #{SESSION_APT_CODE}
+		<if test="SCH_INOUT_GUBUN == 'IN'.toString()">
+			AND TIT_GUBUN = '입금'
+		</if>
+		<if test="SCH_INOUT_GUBUN == 'OUT'.toString()">
+			AND TIT_GUBUN = '출금'
+		</if>
+	</select>
+	
+	
+	<select id="getSmsSendDtl_List" parameterType="java.util.HashMap" resultType="apt.framework.common.DataMap">
+		SELECT
+			TB.*
+		FROM(
+			SELECT
+				T.*
+				, CAST(CEILING((RNUM)/#{PAGE_SIZE}) AS CHAR)  AS PAGE
+				, CAST(#{TOTAL_CNT} - RNUM +1 AS CHAR) AS RNUMUM
+			FROM(
+				SELECT
+				  APT_CODE
+				, TIT_GUBUN
+				, CONT
+				, DATE_FORMAT(REGDATE, '%Y-%m-%d') REGDATE 
+				, AMT
+				, SEND_CNT
+				, @RNUM := @RNUM + 1  AS RNUM
+			FROM SMS_SEND_DTL ,(SELECT @RNUM := 0 ) STR	
+			WHERE APT_CODE = #{SESSION_APT_CODE}
+			<if test="SCH_INOUT_GUBUN == 'IN'.toString()">
+				AND TIT_GUBUN = '입금'
+			</if>
+			<if test="SCH_INOUT_GUBUN == 'OUT'.toString()">
+				AND TIT_GUBUN = '출금'
+			</if>
+<!-- 			ORDER BY REGDATE DESC -->
+			)T
+		)TB
+		WHERE PAGE = #{CURR_PAGE} 
+		ORDER BY REGDATE DESC
 	</select>
 	
 </mapper>
