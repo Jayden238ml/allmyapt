@@ -6,12 +6,21 @@ response.setHeader("Cache-Control", "no-cache");
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<META http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
-<META HTTP-EQUIV="Expires" CONTENT="-1">
-<meta name="format-detection" content="telephone=no" /> <!-- 익스플로러 전화번호 효과 제거 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="title" content="아파트관리" />
+<meta name="description" content="아파트,입예협,입주자관리,입주예정자협의회,시세조회,분양가조회, 실거래가 비교, 분양가 비교" />
+<meta name="keywords" content="아파트,입예협,입주자관리,입주예정자협의회,시세조회,분양가조회, 실거래가 비교, 분양가 비교, 올마이아파트" />
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="http://www.allmyapt.com">
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="아파트관리">
+<meta property="og:type" content="article">
+<meta property="og:url" content="http://www.allmyapt.com">
+<meta property="og:title" content="아파트정보 | 입주자관리 | 실거래가 조회 | 거래가 비교">
+<meta property="og:image" content="/static_root/images/common/meta_img.jpg">
+<meta property="og:description" content="아파트관리 " />
 <title>올마이티컴퍼니</title>
 <%@ include file="apt_common.jsp" %>
 <link rel="shortcut icon" href="/static_root/images/common/favicon.ico">
