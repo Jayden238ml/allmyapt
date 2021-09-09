@@ -301,7 +301,7 @@
 				<ul>
 					<li class="sub-depth2"><a href="/user/apt_info1L.do?TMC=TMC002&LMC=LMC005" title="아파트정보"><span>아파트정보</span></a></li>
 				</ul>
-					<li class="hm-sub sub-depth1"><a href="#"><span>입주민 관리</span> <i class="ion-android-add" aria-hidden="true"></i></a>
+					<li class="hm-sub sub-depth1"><a href="#"><span>입주민 전용</span> <i class="ion-android-add" aria-hidden="true"></i></a>
 				<c:if test="${fn:indexOf(INIT_DATA.SESSION_AUTH_CD, 'APT') ne -1}">
 					<ul>
 						<li class="sub-depth2"><a href="javascript:fnMobileClickTopMenu('LMC008');"><span>위임장 정보</span></a></li>
